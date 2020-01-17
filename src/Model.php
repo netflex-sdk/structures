@@ -44,13 +44,6 @@ abstract class Model extends Adapter
   protected $resolvableField = 'url';
 
   /**
-   * Determines how results from all() should be chunked
-   *
-   * @var int
-   */
-  protected $chunkSize = 100;
-
-  /**
    * Indicates if we should automatically publish the model on save.
    *
    * @var bool
@@ -65,7 +58,7 @@ abstract class Model extends Adapter
   protected $respectPublishingStatus = true;
 
   /**
-   * The number of models to return for pagination.
+   * The number of models to return for pagination. Also determines chunk size for LazyCollection
    *
    * @var int
    */
