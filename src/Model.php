@@ -2,6 +2,8 @@
 
 namespace Netflex\Structure;
 
+use Netflex\API;
+
 use Netflex\Structure\Traits\HidesDefaultFields;
 use Netflex\Structure\Adapters\EloquentAdapter as Adapter;
 
@@ -89,4 +91,57 @@ abstract class Model extends Adapter
    * @var array
    */
   protected $hidden = [];
+
+  /**
+   * Retrieves a record by key
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @return array|null
+   */
+  protected function performRetrieveRequest(?int $relationId = null, $key)
+  {
+    return API::getClient()
+      ->get('builder/structures/entry/' . $key, true);
+  }
+
+  /**
+   * Inserts a new record, and returns its id
+   *
+   * @property int|null $relationId
+   * @property array $attributes
+   * @return mixed
+   */
+  protected function performInsertRequest(?int $relationId = null, array $attributes = [])
+  {
+    $response = API::getClient()
+      ->post('builder/structures/' . $relationId . '/entry', $attributes);
+
+    return $response->entry_id;
+  }
+
+  /**
+   * Updates a record
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @param array $attributes
+   * @return void
+   */
+  protected function performUpdateRequest(?int $relationId = null, $key, $attributes = [])
+  {
+    return API::getClient()->put('builder/structures/entry/' . $key, $attributes);
+  }
+
+  /**
+   * Deletes a record
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @return bool
+   */
+  protected function performDeleteRequest(?int $relationId = null, $key)
+  {
+    return false;
+  }
 }

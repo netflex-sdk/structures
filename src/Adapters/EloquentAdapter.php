@@ -6,8 +6,6 @@ use Exception;
 use ArrayAccess;
 use JsonSerializable;
 
-use Netflex\API;
-
 use Netflex\Query\Traits\Queryable;
 use Netflex\Query\Traits\HasMapper;
 use Netflex\Query\Traits\HasRelation;
@@ -159,6 +157,55 @@ abstract class EloquentAdapter implements Arrayable, ArrayAccess, Jsonable, Json
   }
 
   /**
+   * Retrieves a record by key
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @return array|null
+   */
+  protected function performRetrieveRequest(?int $relationId = null, $key)
+  {
+    //
+  }
+
+  /**
+   * Inserts a new record, and returns its id
+   *
+   * @property ?int $relationId
+   * @property array $attributes
+   * @return mixed
+   */
+  protected function performInsertRequest(?int $relationId = null, array $attributes = [])
+  {
+    //
+  }
+
+  /**
+   * Updates a record
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @param array $attributes
+   * @return void
+   */
+  protected function performUpdateRequest(?int $relationId = null, $key, $attributes = [])
+  {
+    //
+  }
+
+  /**
+   * Deletes a record
+   *
+   * @param int|null $relationId
+   * @param mixed $key
+   * @return bool
+   */
+  protected function performDeleteRequest(?int $relationId = null, $key)
+  {
+    //
+  }
+
+  /**
    * Reload a fresh model instance from the database.
    *
    * @return static|null
@@ -174,7 +221,7 @@ abstract class EloquentAdapter implements Arrayable, ArrayAccess, Jsonable, Json
     return $fresh->withIgnoredPublishingStatus(function () use ($fresh) {
       try {
         $attributes = [$this->getKeyName() => $this->getKeyName()];
-        $attributes = array_merge($attributes, API::getClient()->get('builder/structures/entry/' . $this->getKey(), true));
+        $attributes = array_merge($attributes, $this->performRetrieveRequest($this->getRelationId(), $this->getKey()));
         $fresh->setRawAttributes($attributes, true);
         return $fresh;
       } catch (GuzzleException $ex) {
@@ -292,10 +339,10 @@ abstract class EloquentAdapter implements Arrayable, ArrayAccess, Jsonable, Json
     }
 
     if (count($dirty) > 0) {
-      API::getClient()->put('builder/structures/entry/' . $this->getKey(), $dirty);
+      $this->performUpdateRequest($this->getRelationId(), $this->getKey(), $dirty);
 
       $this->withIgnoredPublishingStatus(function () {
-        $this->attributes = API::getClient()->get('builder/structures/entry/' . $this->getKey(), true);;
+        $this->attributes = $this->performRetrieveRequest($this->getRelationId(), $this->getKey());
       });
 
       $this->fireModelEvent('updated', false);
@@ -339,11 +386,10 @@ abstract class EloquentAdapter implements Arrayable, ArrayAccess, Jsonable, Json
       $attributes['published'] = true;
     }
 
-    $response = API::getClient()->post('builder/structures/' . $this->getRelationId() . '/entry', $attributes);
-    $this->attributes[$this->getKeyName()] = $response->entry_id;
+    $this->attributes[$this->getKeyName()] = $this->performInsertRequest($this->getRelationId(), $attributes);
 
     $this->withIgnoredPublishingStatus(function () {
-      $this->attributes = API::getClient()->get('builder/structures/entry/' . $this->getKey(), true);
+      $this->attributes = $this->performRetrieveRequest($this->getRelationId(), $this->getKey());
     });
 
     $this->exists = true;
@@ -444,9 +490,11 @@ abstract class EloquentAdapter implements Arrayable, ArrayAccess, Jsonable, Json
    */
   protected function performDeleteOnModel()
   {
-    // do delete
+    if ($wasDeleted = $this->performDeleteRequest($this->getRelationId(), $this->getKey())) {
+      $this->exists = false;
+      return $wasDeleted;
+    }
 
-    $this->exists = false;
     return false;
   }
 
