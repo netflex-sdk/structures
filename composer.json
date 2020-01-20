@@ -13,10 +13,7 @@
   "autoload": {
     "psr-4": {
       "Netflex\\Structure\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+    }
   },
   "require": {
     "php": "^7.3",

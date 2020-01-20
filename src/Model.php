@@ -5,7 +5,7 @@ namespace Netflex\Structure;
 use Netflex\API;
 
 use Netflex\Structure\Traits\HidesDefaultFields;
-use Netflex\Structure\Adapters\EloquentAdapter as Adapter;
+use Netflex\Query\QueryableModel as Adapter;
 
 /**
  * @property int $id
@@ -30,6 +30,13 @@ use Netflex\Structure\Adapters\EloquentAdapter as Adapter;
 abstract class Model extends Adapter
 {
   use HidesDefaultFields;
+
+  /**
+   * The relation associated with the model.
+   *
+   * @var string
+   */
+  protected $relation = 'entry';
 
   /**
    * The directory_id associated with the model.
