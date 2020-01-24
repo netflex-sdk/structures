@@ -2,10 +2,12 @@
 
 namespace Netflex\Structure;
 
-use Netflex\API;
+use Netflex\API\Facades\API;
 
+use Netflex\Query\QueryableModel;
+
+use Netflex\Structure\Traits\CastsDefaultFields;
 use Netflex\Structure\Traits\HidesDefaultFields;
-use Netflex\Query\QueryableModel as Adapter;
 
 /**
  * @property int $id
@@ -27,8 +29,9 @@ use Netflex\Query\QueryableModel as Adapter;
  * @property mixed $authgroups
  * @property array $variants
  */
-abstract class Model extends Adapter
+abstract class Model extends QueryableModel
 {
+  use CastsDefaultFields;
   use HidesDefaultFields;
 
   /**
@@ -71,7 +74,7 @@ abstract class Model extends Adapter
    *
    * @var int
    */
-  protected $perPage = 15;
+  protected $perPage = 100;
 
   /**
    * Indicates if the model should be timestamped.
@@ -100,6 +103,13 @@ abstract class Model extends Adapter
   protected $hidden = [];
 
   /**
+   * Determines if we should cache some results.
+   *
+   * @var bool
+   */
+  protected $cachesResults = true;
+
+  /**
    * Retrieves a record by key
    *
    * @param int|null $relationId
@@ -108,8 +118,7 @@ abstract class Model extends Adapter
    */
   protected function performRetrieveRequest(?int $relationId = null, $key)
   {
-    return API::getClient()
-      ->get('builder/structures/entry/' . $key, true);
+    return API::get('builder/structures/entry/' . $key, true);
   }
 
   /**
@@ -121,8 +130,7 @@ abstract class Model extends Adapter
    */
   protected function performInsertRequest(?int $relationId = null, array $attributes = [])
   {
-    $response = API::getClient()
-      ->post('builder/structures/' . $relationId . '/entry', $attributes);
+    $response = API::post('builder/structures/' . $relationId . '/entry', $attributes);
 
     return $response->entry_id;
   }
@@ -137,7 +145,7 @@ abstract class Model extends Adapter
    */
   protected function performUpdateRequest(?int $relationId = null, $key, $attributes = [])
   {
-    return API::getClient()->put('builder/structures/entry/' . $key, $attributes);
+    return API::put('builder/structures/entry/' . $key, $attributes);
   }
 
   /**
@@ -149,6 +157,6 @@ abstract class Model extends Adapter
    */
   protected function performDeleteRequest(?int $relationId = null, $key)
   {
-    return false;
+    return !!API::delete('builder/structures/entry/' . $key);
   }
 }

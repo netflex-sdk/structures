@@ -17,13 +17,15 @@
   },
   "require": {
     "php": "^7.3",
-    "illuminate/container": "^6.11",
-    "illuminate/contracts": "^6.10",
-    "illuminate/database": "^6.11",
-    "illuminate/events": "^6.11",
-    "nesbot/carbon": "^2.28",
-    "netflex/api": "^2.0",
-    "netflex/query-builder": "^1.0",
-    "netflex/support": "^2.0"
+    "netflex/query-builder": "^2.0"
+  },
+  "require-dev": {
+    "illuminate/cache": "^6.12",
+    "illuminate/container": "^6.12",
+    "illuminate/events": "^6.12",
+    "illuminate/filesystem": "^6.12",
+    "illuminate/support": "^6.12",
+    "larapack/dd": "^1.1",
+    "vlucas/phpdotenv": "^3.6"
   }
 }
