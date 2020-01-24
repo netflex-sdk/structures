@@ -74,7 +74,7 @@ abstract class Model extends QueryableModel
    *
    * @var int
    */
-  protected $perPage = 15;
+  protected $perPage = 100;
 
   /**
    * Indicates if the model should be timestamped.
@@ -101,6 +101,13 @@ abstract class Model extends QueryableModel
    * @var array
    */
   protected $hidden = [];
+
+  /**
+   * Determines if we should cache some results.
+   *
+   * @var bool
+   */
+  protected $cachesResults = true;
 
   /**
    * Retrieves a record by key
