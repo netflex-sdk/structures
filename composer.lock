@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b97d02600a224d27405b2c0226e89b68",
+    "content-hash": "3fc0db67683b0209101f566a16933211",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -629,16 +629,16 @@
         },
         {
             "name": "netflex/query-builder",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netflex-sdk/query-builder.git",
-                "reference": "841d5fe0362d5ba9c6fe792ab0b7da11011d44de"
+                "reference": "7741f645eb52ace91da33ea98a3b12154307fb6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/841d5fe0362d5ba9c6fe792ab0b7da11011d44de",
-                "reference": "841d5fe0362d5ba9c6fe792ab0b7da11011d44de",
+                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/7741f645eb52ace91da33ea98a3b12154307fb6d",
+                "reference": "7741f645eb52ace91da33ea98a3b12154307fb6d",
                 "shasum": ""
             },
             "require": {
@@ -689,7 +689,7 @@
                 "netflex",
                 "query"
             ],
-            "time": "2020-01-24T15:25:34+00:00"
+            "time": "2020-01-27T22:04:39+00:00"
         },
         {
             "name": "psr/container",
