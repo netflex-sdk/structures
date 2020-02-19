@@ -17,14 +17,14 @@
   },
   "require": {
     "php": "^7.3",
-    "netflex/query-builder": "^2.0"
+    "netflex/query-builder": "^2.0.0-RC1"
   },
   "require-dev": {
-    "illuminate/cache": "^6.12",
-    "illuminate/container": "^6.12",
-    "illuminate/events": "^6.12",
-    "illuminate/filesystem": "^6.12",
-    "illuminate/support": "^6.12",
+    "illuminate/cache": "^6.16",
+    "illuminate/container": "^6.16",
+    "illuminate/events": "^6.16",
+    "illuminate/filesystem": "^6.16",
+    "illuminate/support": "^6.16",
     "larapack/dd": "^1.1",
     "vlucas/phpdotenv": "^3.6"
   }
