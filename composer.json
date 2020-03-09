@@ -17,14 +17,16 @@
   },
   "require": {
     "php": "^7.3",
-    "netflex/query-builder": "^2.0.0-RC1"
+    "netflex/query-builder": "^2.0.0-RC6"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require-dev": {
-    "illuminate/cache": "^6.16",
-    "illuminate/container": "^6.16",
-    "illuminate/events": "^6.16",
-    "illuminate/filesystem": "^6.16",
-    "illuminate/support": "^6.16",
+    "illuminate/cache": "^7.0",
+    "illuminate/container": "^7.0",
+    "illuminate/events": "^7.0",
+    "illuminate/filesystem": "^7.0",
+    "illuminate/support": "^7.0",
     "larapack/dd": "^1.1",
     "vlucas/phpdotenv": "^3.6"
   }
