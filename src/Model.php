@@ -110,6 +110,24 @@ abstract class Model extends QueryableModel
   protected $cachesResults = true;
 
   /**
+   * Resolves an instance
+   *
+   * @param mixed $resolveBy
+   * @param  string|null $field
+   * @return static|Collection|null
+   * @throws NotQueryableException If object not queryable
+   * @throws QueryException On invalid query
+   */
+  public static function resolve($resolveBy, $field = null)
+  {
+    if ($field === null || $field === 'url') {
+      $resolveBy = rtrim($resolveBy, '/') . '/';
+    }
+
+    parent::resolve($resolveBy, $field);
+  }
+
+  /**
    * Retrieves a record by key
    *
    * @param int|null $relationId
