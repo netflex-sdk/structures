@@ -124,7 +124,7 @@ abstract class Model extends QueryableModel
       $resolveBy = rtrim($resolveBy, '/') . '/';
     }
 
-    parent::resolve($resolveBy, $field);
+    return parent::resolve($resolveBy, $field);
   }
 
   /**
