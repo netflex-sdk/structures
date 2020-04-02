@@ -2,8 +2,9 @@
 
 namespace Netflex\Structure;
 
-use Netflex\API\Facades\API;
+use Throwable;
 
+use Netflex\API\Facades\API;
 use Netflex\Query\QueryableModel;
 
 use Netflex\Structure\Traits\CastsDefaultFields;
@@ -125,6 +126,26 @@ abstract class Model extends QueryableModel
     }
 
     return parent::resolve($resolveBy, $field);
+  }
+
+  /**
+   * Loads the given revision
+   *
+   * @param int $revisionId
+   * @return static
+   */
+  public function loadRevision($revisionId = null)
+  {
+    if (!$revisionId || $this->revision === (int) $revisionId) {
+      return $this;
+    }
+
+    try {
+      $this->attributes = API::get("builder/structures/entry/{$this->getKey()}/revision/{$revisionId}", true);
+      return $this;
+    } catch (Throwable $e) {
+      return null;
+    }
   }
 
   /**
