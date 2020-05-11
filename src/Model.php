@@ -2,8 +2,9 @@
 
 namespace Netflex\Structure;
 
-use Netflex\API\Facades\API;
+use Throwable;
 
+use Netflex\API\Facades\API;
 use Netflex\Query\QueryableModel;
 
 use Netflex\Structure\Traits\CastsDefaultFields;
@@ -28,6 +29,7 @@ use Netflex\Structure\Traits\HidesDefaultFields;
  * @property bool $public
  * @property mixed $authgroups
  * @property array $variants
+ * @property-read Structure|null $structure
  */
 abstract class Model extends QueryableModel
 {
@@ -110,6 +112,44 @@ abstract class Model extends QueryableModel
   protected $cachesResults = true;
 
   /**
+   * Resolves an instance
+   *
+   * @param mixed $resolveBy
+   * @param  string|null $field
+   * @return static|Collection|null
+   * @throws NotQueryableException If object not queryable
+   * @throws QueryException On invalid query
+   */
+  public static function resolve($resolveBy, $field = null)
+  {
+    if ($field === null || $field === 'url') {
+      $resolveBy = rtrim($resolveBy, '/') . '/';
+    }
+
+    return parent::resolve($resolveBy, $field);
+  }
+
+  /**
+   * Loads the given revision
+   *
+   * @param int $revisionId
+   * @return static
+   */
+  public function loadRevision($revisionId = null)
+  {
+    if (!$revisionId || $this->revision === (int) $revisionId) {
+      return $this;
+    }
+
+    try {
+      $this->attributes = API::get("builder/structures/entry/{$this->getKey()}/revision/{$revisionId}", true);
+      return $this;
+    } catch (Throwable $e) {
+      return null;
+    }
+  }
+
+  /**
    * Retrieves a record by key
    *
    * @param int|null $relationId
@@ -158,5 +198,13 @@ abstract class Model extends QueryableModel
   protected function performDeleteRequest(?int $relationId = null, $key)
   {
     return !!API::delete('builder/structures/entry/' . $key);
+  }
+
+  /**
+   * @return Structure|null
+   */
+  public function getStructureAttribute()
+  {
+    return Structure::retrieve($this->relationId);
   }
 }
