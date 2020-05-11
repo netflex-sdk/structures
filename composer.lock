@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d951afc48fe9061694f12049b8ffd9c",
+    "content-hash": "6cf343d4cb2e5aabf4ae508f70d20623",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -693,6 +693,48 @@
                 "query"
             ],
             "time": "2020-03-13T10:16:01+00:00"
+        },
+        {
+            "name": "netflex/support",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netflex-sdk/support.git",
+                "reference": "7fb60484451c717a865cf1181177e859a38353d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netflex-sdk/support/zipball/7fb60484451c717a865cf1181177e859a38353d2",
+                "reference": "7fb60484451c717a865cf1181177e859a38353d2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0",
+                "netflex/api": "^2.0"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.1",
+                "phpunit/phpunit": "^8.5",
+                "vlucas/phpdotenv": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Netflex\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thomas Alrek",
+                    "email": "thomas@apility.no"
+                }
+            ],
+            "description": "Netflex Support library",
+            "time": "2020-04-30T11:16:35+00:00"
         },
         {
             "name": "psr/container",

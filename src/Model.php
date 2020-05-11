@@ -29,6 +29,7 @@ use Netflex\Structure\Traits\HidesDefaultFields;
  * @property bool $public
  * @property mixed $authgroups
  * @property array $variants
+ * @property-read Structure|null $structure
  */
 abstract class Model extends QueryableModel
 {
@@ -197,5 +198,13 @@ abstract class Model extends QueryableModel
   protected function performDeleteRequest(?int $relationId = null, $key)
   {
     return !!API::delete('builder/structures/entry/' . $key);
+  }
+
+  /**
+   * @return Structure|null
+   */
+  public function getStructureAttribute()
+  {
+    return Structure::retrieve($this->relationId);
   }
 }
