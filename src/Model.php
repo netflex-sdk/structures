@@ -86,6 +86,26 @@ abstract class Model extends QueryableModel
   protected $hidesDefaultFields = true;
 
   /**
+   * Indicates which fields are considered default fields
+   *
+   * @var string[]
+   */
+  protected $defaultFields = [
+    'directory_id',
+    'title',
+    'revision',
+    'published',
+    'userid',
+    'use_time',
+    'start',
+    'stop',
+    'tags',
+    'public',
+    'authgroups',
+    'variants',
+  ];
+
+  /**
    * Indicates if the model should be timestamped.
    *
    * @var bool
