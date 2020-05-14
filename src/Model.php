@@ -79,6 +79,13 @@ abstract class Model extends QueryableModel
   protected $perPage = 100;
 
   /**
+   * Indicates if the model should hide default fields
+   *
+   * @var bool
+   */
+  protected $hidesDefaultFields = true;
+
+  /**
    * Indicates if the model should be timestamped.
    *
    * @var bool
