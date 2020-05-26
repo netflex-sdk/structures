@@ -51,6 +51,14 @@ class Field implements CastsAttributes
   public function get($model, $key, $value, $attributes)
   {
     switch ($this->type) {
+      case 'checkbox':
+        return boolval(intval($value));
+      case 'integer':
+        return intval($value);
+      case 'float':
+        return floatval($value);
+      case 'tags':
+        return array_values(array_filter(explode(',', $value)));
       case 'entries':
       case 'customers':
         return array_map('intval', array_values(array_filter(explode(',', $value))));
@@ -70,6 +78,7 @@ class Field implements CastsAttributes
   public function set($model, $key, $value, $attributes)
   {
     switch ($this->type) {
+      case 'tags':
       case 'entries':
       case 'customers':
         $value = is_array($value) ? implode(',', $value) : $value;
