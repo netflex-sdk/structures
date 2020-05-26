@@ -59,6 +59,8 @@ class Field implements CastsAttributes
       case 'editor-blocks':
         return new EditorBlocks($value);
       case 'date':
+        return $value ? Carbon::parse($value)->startOfDay() : null;
+      case 'datetime':
         return $value ? Carbon::parse($value) : null;
       default:
         return $value;
@@ -67,6 +69,26 @@ class Field implements CastsAttributes
 
   public function set($model, $key, $value, $attributes)
   {
+    switch ($this->type) {
+      case 'entries':
+      case 'customers':
+        $value = is_array($value) ? implode(',', $value) : $value;
+        break;
+      case 'json':
+        $value = $value instanceof JSON ? $value->jsonSerialize() : $value;
+        break;
+      case 'editor-blocks':
+        $value = $value instanceof EditorBlocks ? $value->jsonSerialize() : $value;
+        break;
+      case 'date':
+        $value = $value instanceof Carbon ? $value->toDateString() : $value;
+        break;
+      case 'datetime':
+        $value = $value instanceof Carbon ? $value->toDateTimeString() : $value;
+        break;
+      default:
+        break;
+    }
     return [$key => $value];
   }
 }
