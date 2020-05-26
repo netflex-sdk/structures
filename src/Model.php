@@ -86,6 +86,13 @@ abstract class Model extends QueryableModel
   protected $hidesDefaultFields = true;
 
   /**
+   * Indicates if the model should automatically resolve and cast the fields to the correct types
+   *
+   * @var bool
+   */
+  protected $castsCustomFields = true;
+
+  /**
    * Indicates which fields are considered default fields
    *
    * @var string[]

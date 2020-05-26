@@ -17,6 +17,7 @@
   },
   "require": {
     "php": "^7.3",
+    "netflex/pages": "^2.0",
     "netflex/query-builder": "^2.0",
     "netflex/support": "^2.0"
   },
