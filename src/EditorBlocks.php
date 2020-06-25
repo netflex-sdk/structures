@@ -24,9 +24,9 @@ class EditorBlocks implements JsonSerializable, Jsonable, Htmlable
 
   protected $attributes = [];
 
-  public function __construct(array $attributes = [])
+  public function __construct($attributes = [])
   {
-    $this->attributes = $attributes;
+    $this->attributes = $attributes ?? [];
   }
 
   public function getBlocksAttribute($blocks = [])
@@ -34,6 +34,16 @@ class EditorBlocks implements JsonSerializable, Jsonable, Htmlable
     return collect($blocks)->map(function ($block) {
       return json_decode(json_encode($block));
     });
+  }
+
+  public function jsonSerialize()
+  {
+    return count($this->attributes) ? $this->attributes : null;
+  }
+
+  public function toJson($options = 0)
+  {
+    return json_encode($this->jsonSerialize(), $options);
   }
 
   /**
