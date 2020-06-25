@@ -156,7 +156,9 @@ abstract class Model extends QueryableModel
    */
   public static function resolve($resolveBy, $field = null)
   {
-    if ($field === null || $field === 'url') {
+    $field = $field ?? with(new static)->getResolvableField();
+
+    if ($field === 'url') {
       $resolveBy = rtrim($resolveBy, '/') . '/';
     }
 
