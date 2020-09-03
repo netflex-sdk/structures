@@ -33,7 +33,7 @@ use Throwable;
  * @property-read string $created
  * @property-read int $userid
  * @property-read mixed $config
- * @property-read Field[] $fields
+ * @property-read Collection $fields
  */
 class Structure
 {
