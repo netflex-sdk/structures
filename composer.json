@@ -15,12 +15,6 @@
       "Netflex\\Structure\\": "src/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/apility/seotools"
-    }
-  ],
   "replace": {
     "netflex/structure": "*"
   },
@@ -30,8 +24,6 @@
     "netflex/query-builder": "^3.0",
     "netflex/support": "^3.0"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require-dev": {
     "illuminate/cache": "^8.0",
     "illuminate/container": "^8.0",
