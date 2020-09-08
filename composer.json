@@ -21,6 +21,9 @@
       "url": "https://github.com/apility/seotools"
     }
   ],
+  "replace": {
+    "netflex/structure": "*"
+  },
   "require": {
     "php": "^7.3",
     "netflex/pages": "^3.0",
