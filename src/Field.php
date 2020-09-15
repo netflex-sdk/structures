@@ -178,7 +178,7 @@ class Field implements CastsAttributes
         $value = (string) $value;
         break;
       case 'tags':
-      case 'entries':       
+      case 'entries':
       case 'entriessortable':
       case 'customers':
         $value = is_array($value) ? implode(',', $value) : $value;
