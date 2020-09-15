@@ -118,6 +118,7 @@ class Field implements CastsAttributes
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
       case 'entries':
+      case 'entriessortable':
       case 'customers':
         return array_map('intval', array_values(array_filter(explode(',', $value))));
       case 'json':
@@ -177,7 +178,8 @@ class Field implements CastsAttributes
         $value = (string) $value;
         break;
       case 'tags':
-      case 'entries':
+      case 'entries':       
+      case 'entriessortable':
       case 'customers':
         $value = is_array($value) ? implode(',', $value) : $value;
         break;
