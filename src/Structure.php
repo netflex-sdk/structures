@@ -5,7 +5,7 @@ namespace Netflex\Structure;
 use Exception;
 
 use Illuminate\Support\Collection;
-
+use Illuminate\Support\Facades\Cache;
 use Netflex\API\Facades\API;
 use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
@@ -71,7 +71,9 @@ class Structure
   public static function retrieve($id)
   {
     try {
-      return new static(API::get("builder/structures/$id/basic", true));
+      return Cache::rememberForever("structures/$id", function () use ($id) {
+        return new static(API::get("builder/structures/$id/basic", true));
+      });
     } catch (Exception $e) {
       return null;
     }
