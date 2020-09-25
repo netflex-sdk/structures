@@ -24,7 +24,7 @@ class Field implements CastsAttributes
 
   protected $type;
 
-  public function __construct ($typeOrAttributes = 'string')
+  public function __construct($typeOrAttributes = 'string')
   {
     if (is_string($typeOrAttributes)) {
       $this->type = $typeOrAttributes;
@@ -35,17 +35,17 @@ class Field implements CastsAttributes
     }
   }
 
-  public function getIdAttribute ($id)
+  public function getIdAttribute($id)
   {
     return (int) $id;
   }
 
-  public function getCollectionIdAttribute ($collectionId)
+  public function getCollectionIdAttribute($collectionId)
   {
     return (int) $collectionId;
   }
 
-  public function getSortingAttribute ($sorting)
+  public function getSortingAttribute($sorting)
   {
     return (int) $sorting;
   }
@@ -55,7 +55,7 @@ class Field implements CastsAttributes
    * @param Collection $keys
    * @return static
    */
-  protected function findField (Collection $fields, Collection $keys)
+  protected function findField(Collection $fields, Collection $keys)
   {
     $key = $keys->shift();
 
@@ -83,12 +83,13 @@ class Field implements CastsAttributes
    * @param string|array $key
    * @return static
    */
-  protected function getField (Model $model, $key)
+  protected function getField(Model $model, $key)
   {
     return $this->findField($model->structure->fields, Collection::make($key));
   }
 
-  protected function getBlockField (array $block, Field $field) {
+  protected function getBlockField(array $block, Field $field)
+  {
     $blockFieldAttributes = Collection::make($field->blocks)
       ->first(function ($blockFieldAttributes) use ($block) {
         return $blockFieldAttributes['alias'] === $block['type'];
@@ -104,14 +105,15 @@ class Field implements CastsAttributes
    * @param array $attributes
    * @return array|bool|Carbon|float|int|mixed|EditorBlocks|JSON|null
    */
-  public function get ($model, $keys, $value, $attributes)
+  public function get($model, $keys, $value, $attributes)
   {
     switch ($this->type) {
       case 'checkbox':
         return boolval(intval($value));
-      case 'integer':
       case 'entry':
       case 'customer':
+        return $value ? intval($value) : null;
+      case 'integer':
         return intval($value);
       case 'float':
         return floatval($value);
@@ -120,7 +122,9 @@ class Field implements CastsAttributes
       case 'entries':
       case 'entriessortable':
       case 'customers':
-        return array_map('intval', array_values(array_filter(explode(',', $value))));
+        return array_map(function ($value) {
+          return $value ? intval($value) : null;
+        }, array_values(array_filter(explode(',', $value))));
       case 'json':
         return new JSON(json_decode($value, true));
       case 'editor-blocks':
@@ -163,7 +167,7 @@ class Field implements CastsAttributes
     }
   }
 
-  public function set ($model, $keys, $value, $attributes)
+  public function set($model, $keys, $value, $attributes)
   {
     $key = Collection::make($keys)->pop();
 
@@ -238,7 +242,7 @@ class Field implements CastsAttributes
     return [$key => $value];
   }
 
-  public function __debugInfo ()
+  public function __debugInfo()
   {
     return $this->attributes;
   }
