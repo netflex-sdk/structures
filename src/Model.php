@@ -146,26 +146,6 @@ abstract class Model extends QueryableModel
   protected $cachesResults = true;
 
   /**
-   * Resolves an instance
-   *
-   * @param mixed $resolveBy
-   * @param  string|null $field
-   * @return static|Collection|null
-   * @throws NotQueryableException If object not queryable
-   * @throws QueryException On invalid query
-   */
-  public static function resolve($resolveBy, $field = null)
-  {
-    $field = $field ?? with(new static)->getResolvableField();
-
-    if ($field === 'url') {
-      $resolveBy = rtrim($resolveBy, '/') . '/';
-    }
-
-    return parent::resolve($resolveBy, $field);
-  }
-
-  /**
    * Loads the given revision
    *
    * @param int $revisionId
