@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Cache;
 use Netflex\API\Facades\API;
 use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
-use Throwable;
 
 /**
  * @property-read int $id
