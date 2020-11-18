@@ -7,6 +7,8 @@ use Throwable;
 use Netflex\API\Facades\API;
 use Netflex\Query\QueryableModel;
 
+use Netflex\Query\Exceptions\NotFoundException;
+
 use Netflex\Structure\Traits\CastsDefaultFields;
 use Netflex\Structure\Traits\HidesDefaultFields;
 
@@ -222,5 +224,35 @@ abstract class Model extends QueryableModel
   public function getStructureAttribute()
   {
     return Structure::retrieve($this->relationId);
+  }
+
+  /**
+   * Retrieve the model for a bound value.
+   *
+   * @param  mixed  $rawValue
+   * @param  string|null $field
+   * @return \Illuminate\Database\Eloquent\Model|null
+   * @throws NotFoundException
+   */
+  public function resolveRouteBinding($rawValue, $field = null)
+  {
+    $field = $field ?? $this->getResolvableField();
+
+    if ($field === 'id') {
+      return static::find($rawValue);
+    }
+
+    $query = static::where($field, $rawValue);
+
+    if ($field === 'url') {
+      $query = $query->orWhere($field, $rawValue . '/');
+    }
+      
+    /** @var static */
+    if ($model = $query->first()) {
+      return $model;
+    }
+
+    throw new NotFoundException;
   }
 }
