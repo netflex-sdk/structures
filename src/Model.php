@@ -206,7 +206,7 @@ abstract class Model extends QueryableModel
     return API::put('builder/structures/entry/' . $key, $attributes);
   }
 
-  /**
+/**
    * Deletes a record
    *
    * @param int|null $relationId
@@ -215,7 +215,12 @@ abstract class Model extends QueryableModel
    */
   protected function performDeleteRequest(?int $relationId = null, $key)
   {
-    return !!API::delete('builder/structures/entry/' . $key);
+    try {
+      API::delete('builder/structures/entry/' . $key);
+      return true;
+    } catch (Throwable $e) {
+      return false;
+    }
   }
 
   /**
