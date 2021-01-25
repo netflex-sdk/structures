@@ -5,7 +5,9 @@ namespace Netflex\Structure;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use Netflex\Support\Accessors;
+use Netflex\Structure\Model;
 
 /**
  * @property-read int $id
@@ -119,6 +121,9 @@ class Field implements CastsAttributes
         return floatval($value);
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
+      case 'editor-small':
+      case 'editor-large':
+        return $value ? new HtmlString($value) : null;
       case 'entries':
       case 'entriessortable':
       case 'customers':
@@ -167,6 +172,12 @@ class Field implements CastsAttributes
     }
   }
 
+  /**
+   * @param Model $model
+   * @param string[] $keys
+   * @param mixed $value
+   * @param mixed[] $attributes
+   */
   public function set($model, $keys, $value, $attributes)
   {
     $key = Collection::make($keys)->pop();
@@ -186,6 +197,10 @@ class Field implements CastsAttributes
       case 'entriessortable':
       case 'customers':
         $value = is_array($value) ? implode(',', $value) : $value;
+        break;
+      case 'editor-small':
+      case 'editor-large':
+        $value = $value instanceof HtmlString ? $value->__toString() : $value;
         break;
       case 'json':
         $value = $value instanceof JSON ? $value->jsonSerialize() : $value;
