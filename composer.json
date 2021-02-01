@@ -22,7 +22,7 @@
     "php": "^7.3",
     "netflex/pages": "^3.0",
     "netflex/query-builder": "^3.0",
-    "netflex/support": "^3.0"
+    "netflex/support": "^3.1"
   },
   "require-dev": {
     "illuminate/cache": "^8.0",
