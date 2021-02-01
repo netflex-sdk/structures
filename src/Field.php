@@ -5,7 +5,7 @@ namespace Netflex\Structure;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
+use Netflex\Support\HtmlString;
 use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
 
