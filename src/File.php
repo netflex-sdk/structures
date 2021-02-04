@@ -5,7 +5,7 @@ namespace Netflex\Structure;
 use ArrayAccess;
 
 use Netflex\Support\Accessors;
-use Netflex\Structure\Contracts\MediaUrlResolvable;
+use Netflex\Pages\Contracts\MediaUrlResolvable;
 
 class File implements ArrayAccess, MediaUrlResolvable
 {
