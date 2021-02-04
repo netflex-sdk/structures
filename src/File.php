@@ -20,4 +20,15 @@ class File implements ArrayAccess, MediaUrlResolvable
     {
         return $this->attributes['path'];
     }
+
+    public function __debugInfo()
+    {
+        $attributes = [];
+        
+        foreach ($this->attributes as $key => $value) {
+            $attributes[$key] = $this->__get($key);
+        }
+
+        return $attributes;
+    }
 }
