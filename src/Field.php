@@ -121,6 +121,10 @@ class Field implements CastsAttributes
         return floatval($value);
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
+      case 'file':
+        return new File($value);
+      case 'image':
+        return new Image($value);
       case 'editor-small':
       case 'editor-large':
         return $value ? new HtmlString($value) : null;
