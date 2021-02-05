@@ -2,6 +2,7 @@
 
 namespace Netflex\Structure;
 
+use Exception;
 use Throwable;
 
 use Netflex\API\Facades\API;
@@ -206,7 +207,7 @@ abstract class Model extends QueryableModel
     return API::put('builder/structures/entry/' . $key, $attributes);
   }
 
-/**
+  /**
    * Deletes a record
    *
    * @param int|null $relationId
@@ -252,12 +253,22 @@ abstract class Model extends QueryableModel
     if ($field === 'url') {
       $query = $query->orWhere($field, $rawValue . '/');
     }
-      
+
     /** @var static */
     if ($model = $query->first()) {
       return $model;
     }
 
     throw new NotFoundException;
+  }
+
+  /**
+   * Register the model
+   * @return bool
+   * @throws Exception 
+   */
+  public static function register()
+  {
+    return Structure::registerModel(static::class);
   }
 }

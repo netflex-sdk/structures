@@ -41,12 +41,21 @@ class Structure
   protected $attributes = [];
   protected static $models = [];
 
+  /**
+   * @param array $attributes 
+   */
   protected function __construct(array $attributes = [])
   {
     $this->attributes = $attributes;
   }
 
-  public static function register(string $model)
+  /**
+   * Register a model
+   * @param string $model 
+   * @return bool
+   * @throws Exception 
+   */
+  public static function registerModel(string $model)
   {
     $instance = new $model;
     if ($instance instanceof Model) {
@@ -57,16 +66,28 @@ class Structure
     throw new Exception('Class must be an instance of ' . Model::class);
   }
 
-  public static function resolve($id)
+  /**
+   * @param mixed $id 
+   * @return string 
+   */
+  public static function resolveModel($id)
   {
-    return static::$models[$id] ?? null;
+    return static::$models[$id] ?? Entry::class;
   }
 
+  /**
+   * Gets the registered model for this structure
+   * @return string
+   */
   public function model()
   {
-    return static::resolve($this->id);
+    return static::resolveModel($this->id);
   }
 
+  /**
+   * @param int $id 
+   * @return static|null 
+   */
   public static function retrieve($id)
   {
     try {
