@@ -4,11 +4,15 @@ namespace Netflex\Structure;
 
 use Exception;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+
 use Netflex\API\Facades\API;
-use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
+
+use Netflex\Support\Accessors;
 
 /**
  * @property-read int $id
@@ -39,7 +43,6 @@ class Structure
   use Accessors;
 
   protected $attributes = [];
-  protected static $models = [];
 
   /**
    * @param array $attributes 
@@ -58,8 +61,10 @@ class Structure
   public static function registerModel(string $model)
   {
     $instance = new $model;
+
     if ($instance instanceof Model) {
-      static::$models[$instance->getRelationId()] = $model;
+      App::bind('structure.' . $instance->getRelationId(), $model);
+
       return true;
     }
 
@@ -68,11 +73,16 @@ class Structure
 
   /**
    * @param mixed $id 
-   * @return string 
+   * @return Model
+   * @throws Exception
    */
   public static function resolveModel($id)
   {
-    return static::$models[$id] ?? Entry::class;
+    try {
+      return App::make('structure.' . $id);
+    } catch (BindingResolutionException $e) {
+      return App::make(Entry::class);
+    }
   }
 
   /**

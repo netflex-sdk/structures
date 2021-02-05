@@ -13,8 +13,10 @@ class Entry extends Model
     {
         return function ($attributes) {
             if (isset($attributes['directory_id'])) {
-                $model = Structure::resolveModel($attributes['directory_id']);
-                return (new $model)->newFromBuilder($attributes);
+                $relationId = $attributes['directory_id'];
+
+                return Structure::resolveModel($relationId)
+                    ->newFromBuilder($attributes);
             }
 
             return (new static)->newFromBuilder($attributes);
