@@ -18,7 +18,7 @@ class File implements ArrayAccess, MediaUrlResolvable
 
     public function getPathAttribute()
     {
-        return $this->attributes['path'];
+        return $this->attributes['path'] ?? null;  
     }
 
     public function __debugInfo()
