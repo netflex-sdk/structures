@@ -3,14 +3,15 @@
 namespace Netflex\Structure;
 
 use ArrayAccess;
+use JsonSerializable;
 
 use Netflex\Support\Accessors;
 use Netflex\Pages\Contracts\MediaUrlResolvable;
 
-use JsonSerializable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
-class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Jsonable
+class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayable, Jsonable
 {
     use Accessors;
 
@@ -24,6 +25,21 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Jsonabl
         return $this->attributes['path'] ?? null;  
     }
 
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
+        return $this->attributes;
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this->jsonSerialize(), $options);
+    }
+
     public function __debugInfo()
     {
         $attributes = [];
@@ -33,15 +49,5 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Jsonabl
         }
 
         return $attributes;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->attributes;
-    }
-
-    public function toJson($options = 0)
-    {
-        return json_encode($this->jsonSerialize(), $options);
     }
 }
