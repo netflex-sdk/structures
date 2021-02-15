@@ -22,7 +22,18 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayab
 
     public function getPathAttribute()
     {
-        return $this->attributes['path'] ?? null;  
+        return $this->attributes['path'] ?? null;
+    }
+
+    /**
+     * @param null $preset Not used
+     * @return string|null 
+     */
+    public function url($preset = null)
+    {
+        if ($path = $this->getPathAttribute()) {
+            return cdn_url($path);
+        }
     }
 
     public function jsonSerialize()
