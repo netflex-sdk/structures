@@ -2,6 +2,8 @@
 
 namespace Netflex\Structure;
 
+use Apility\SEOTools\Facades\SEOMeta;
+use Apility\SEOTools\Facades\SEOTools;
 use Exception;
 use Throwable;
 
@@ -94,6 +96,13 @@ abstract class Model extends QueryableModel
    * @var bool
    */
   protected $castsCustomFields = true;
+
+  /**
+   * Indicates if we should automatically apply SEO tags when resolving model by URL
+   *
+   * @var bool
+   */
+  protected $applySEO = true;
 
   /**
    * Indicates which fields are considered default fields
@@ -245,7 +254,7 @@ abstract class Model extends QueryableModel
     $field = $field ?? $this->getResolvableField();
 
     if ($field === 'id') {
-      return static::find($rawValue);
+      return static::resolvedRouteBinding(static::find($rawValue));
     }
 
     $query = static::where($field, $rawValue);
@@ -256,10 +265,24 @@ abstract class Model extends QueryableModel
 
     /** @var static */
     if ($model = $query->first()) {
-      return $model;
+      return static::resolvedRouteBinding($model);
     }
 
     throw new NotFoundException;
+  }
+
+  protected static function resolvedRouteBinding(?Model $model = null)
+  {
+    if ($model && $model->applySEO) {
+      if ($title = $model->name) {
+        SEOTools::opengraph()->setTitle($title);
+        SEOTools::twitter()->setTitle($title);
+        SEOTools::jsonLd()->setTitle($title);
+        SEOTools::metatags()->setTitle($title);
+      }
+    }
+
+    return $model;
   }
 
   /**
