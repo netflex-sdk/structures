@@ -60,7 +60,7 @@ class Structure
    */
   public static function registerModel(string $model)
   {
-    $instance = new $model;
+    $instance = new $model([], false);
 
     if ($instance instanceof Model) {
       App::bind('structure.' . $instance->getRelationId(), $model);
