@@ -3,8 +3,11 @@
 namespace Netflex\Structure;
 
 use Carbon\Carbon;
+
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
+use Netflex\Structure\Contracts\StructureField;
 use Netflex\Support\HtmlString;
 use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
@@ -168,9 +171,16 @@ class Field implements CastsAttributes
             ];
           })
           ->merge([
-            'type' => $value['type'],
+            'type' => is_object($value) ? $value->type : $value['type'],
           ])
-          ->toArray();
+          ->map(function ($item) {
+            if (!($item instanceof StructureField)) {
+              return $item instanceof Arrayable ? $item->toArray() : $item;
+            }
+
+            return $item;
+          })
+          ->all();
       default:
         return $value;
     }

@@ -10,14 +10,20 @@ use Netflex\Pages\Contracts\MediaUrlResolvable;
 
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Netflex\Structure\Contracts\StructureField;
 
-class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayable, Jsonable
+class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayable, Jsonable, StructureField
 {
     use Accessors;
 
     public function __construct($attributes = [])
     {
         $this->attributes = $attributes ?? [];
+    }
+
+    public function raw()
+    {
+        return $this->attributes;
     }
 
     public function getPathAttribute()
