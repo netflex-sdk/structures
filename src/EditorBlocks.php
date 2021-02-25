@@ -5,6 +5,7 @@ namespace Netflex\Structure;
 
 use Netflex\Support\Accessors;
 use Netflex\Pages\MediaPreset;
+use Netflex\Structure\Contracts\StructureField;
 
 use Illuminate\Support\Facades\Config;
 
@@ -18,7 +19,7 @@ use Illuminate\Contracts\Support\Htmlable;
  * @property string $version
  * @property string|null $author
  */
-class EditorBlocks implements JsonSerializable, Jsonable, Htmlable
+class EditorBlocks implements JsonSerializable, Jsonable, Htmlable, StructureField
 {
   use Accessors;
 
@@ -27,6 +28,11 @@ class EditorBlocks implements JsonSerializable, Jsonable, Htmlable
   public function __construct($attributes = [])
   {
     $this->attributes = $attributes ?? [];
+  }
+
+  public function raw()
+  {
+    return $this->attributes;
   }
 
   public function getBlocksAttribute($blocks = [])
