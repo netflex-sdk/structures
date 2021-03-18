@@ -21,6 +21,19 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayab
         $this->attributes = $attributes ?? [];
     }
 
+    /**
+     * @param array|null $attributes 
+     * @return static|null 
+     */
+    public static function cast($attributes = [])
+    {
+        if ($attributes && is_array($attributes) && array_key_exists('path', $attributes)) {
+            return new static($attributes);
+        }
+
+        return null;
+    }
+
     public function raw()
     {
         return $this->attributes;
