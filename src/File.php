@@ -27,7 +27,7 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayab
      */
     public static function cast($attributes = [])
     {
-        if ($attributes && is_array($attributes) && array_key_exists('path', $attributes)) {
+        if ($attributes && is_array($attributes) && array_key_exists('path', $attributes) && $attributes['path']) {
             return new static($attributes);
         }
 

@@ -125,9 +125,9 @@ class Field implements CastsAttributes
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
       case 'file':
-        return File::cast($attributes);
+        return File::cast($value);
       case 'image':
-        return Image::cast($attributes);
+        return Image::cast($value);
       case 'editor-small':
       case 'editor-large':
         return $value ? new HtmlString($value) : null;
