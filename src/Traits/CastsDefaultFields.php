@@ -5,6 +5,7 @@ namespace Netflex\Structure\Traits;
 use Netflex\Structure\Model;
 use Netflex\Structure\Field;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 
 trait CastsDefaultFields
@@ -20,9 +21,13 @@ trait CastsDefaultFields
       });
 
       if ($structure) {
-        return $structure->fields->mapWithKeys(function (Field $field) {
-          return [$field->alias => Field::class . ':' . $field->type];
-        })->toArray();
+        return $structure->fields->mapWithKeys(function (Field $field) use ($model) {
+          $method = Str::camel(implode('_', ['get', $field->alias, 'attribute']));
+          $accessor = method_exists($model, $method);
+          return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
+        })
+          ->filter()
+          ->toArray();
       }
     }
 
