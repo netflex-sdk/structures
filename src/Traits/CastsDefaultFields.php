@@ -24,6 +24,11 @@ trait CastsDefaultFields
         return $structure->fields->mapWithKeys(function (Field $field) use ($model) {
           $method = Str::camel(implode('_', ['get', $field->alias, 'attribute']));
           $accessor = method_exists($model, $method);
+
+          if (isset($model->castIfAccessorExists) && $model->castIfAccessorExists) {
+            $structure = false;
+          }
+
           return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
         })
           ->filter()
