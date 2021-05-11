@@ -131,6 +131,20 @@ class Field implements CastsAttributes
       case 'editor-small':
       case 'editor-large':
         return $value ? new HtmlString($value) : null;
+      case 'multiselect':
+        return array_map(function ($value) {
+          if (preg_match('/(^\d+(?:\.\d+)?$)/', trim($value))) {
+            $value = trim($value);
+
+            if (strpos($value, '.') !== false) {
+              return floatval($value);
+            }
+
+            return intval($value);
+          }
+
+          return $value;
+        }, array_values(array_filter(explode(',', $value))));
       case 'entries':
       case 'entriessortable':
       case 'customers':
@@ -206,6 +220,7 @@ class Field implements CastsAttributes
       case 'float':
         $value = (string) $value;
         break;
+      case 'multiselect':
       case 'tags':
       case 'entries':
       case 'entriessortable':
