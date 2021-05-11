@@ -98,6 +98,13 @@ abstract class Model extends QueryableModel
   protected $castsCustomFields = true;
 
   /**
+   * If an accessor method exists, determines if the cast or accessor should run.
+   *
+   * @var bool
+   */
+  protected $castIfAccessorExists = false;
+
+  /**
    * Indicates if we should automatically apply SEO tags when resolving model by URL
    *
    * @var bool
