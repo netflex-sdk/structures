@@ -20,6 +20,7 @@ trait CastsDefaultFields
         return $model->structure;
       });
 
+
       if ($structure) {
         return $structure->fields->mapWithKeys(function (Field $field) use ($model) {
           $method = Str::camel(implode('_', ['get', $field->alias, 'attribute']));
@@ -32,7 +33,6 @@ trait CastsDefaultFields
           return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
         })
           ->filter()
-          ->values()
           ->toArray();
       }
     }
