@@ -26,12 +26,13 @@ trait CastsDefaultFields
           $accessor = method_exists($model, $method);
 
           if (isset($model->castIfAccessorExists) && $model->castIfAccessorExists) {
-            $structure = false;
+            $accessor = false;
           }
 
           return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
         })
           ->filter()
+          ->values()
           ->toArray();
       }
     }
