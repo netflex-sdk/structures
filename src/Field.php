@@ -144,7 +144,9 @@ class Field implements CastsAttributes
           }
 
           return $value;
-        }, array_values(array_filter(explode(',', $value))));
+        }, array_values(array_filter(explode(',', $value), function ($value) {
+          return is_string($value) ? strlen(trim($value)) : $value !== null;
+        })));
       case 'entries':
       case 'entriessortable':
       case 'customers':
