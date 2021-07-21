@@ -115,6 +115,7 @@ class Field implements CastsAttributes
     switch ($this->type) {
       case 'checkbox':
         return boolval(intval($value));
+      case 'customer-group':
       case 'entry':
       case 'customer':
         return $value ? intval($value) : null;
@@ -147,6 +148,7 @@ class Field implements CastsAttributes
         }, array_values(array_filter(explode(',', $value), function ($value) {
           return is_string($value) ? strlen(trim($value)) : $value !== null;
         })));
+      case 'customer-groups':
       case 'entries':
       case 'entriessortable':
       case 'customers':
