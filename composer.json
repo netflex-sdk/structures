@@ -21,7 +21,7 @@
   "require": {
     "php": "^7.3",
     "netflex/pages": "^3.2.11",
-    "netflex/query-builder": "^3.10",
+    "netflex/query-builder": "^3.11",
     "netflex/support": "^3.1"
   },
   "require-dev": {
