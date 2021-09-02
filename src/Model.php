@@ -2,12 +2,10 @@
 
 namespace Netflex\Structure;
 
-use Apility\SEOTools\Facades\SEOMeta;
 use Apility\SEOTools\Facades\SEOTools;
 use Exception;
 use Throwable;
 
-use Netflex\API\Facades\API;
 use Netflex\Query\QueryableModel;
 
 use Netflex\Query\Exceptions\NotFoundException;
@@ -40,6 +38,13 @@ abstract class Model extends QueryableModel
 {
   use CastsDefaultFields;
   use HidesDefaultFields;
+
+  /**
+   * The connection name for the model.
+   *
+   * @var string|null
+   */
+  protected $connection = 'default';
 
   /**
    * The relation associated with the model.
@@ -177,7 +182,8 @@ abstract class Model extends QueryableModel
     }
 
     try {
-      $this->attributes = API::get("builder/structures/entry/{$this->getKey()}/revision/{$revisionId}", true);
+      $this->attributes = $this->getConnection()
+        ->get("builder/structures/entry/{$this->getKey()}/revision/{$revisionId}", true);
       return $this;
     } catch (Throwable $e) {
       return null;
@@ -193,7 +199,8 @@ abstract class Model extends QueryableModel
    */
   protected function performRetrieveRequest(?int $relationId = null, $key)
   {
-    return API::get('builder/structures/entry/' . $key, true);
+    return $this->getConnection()
+      ->get('builder/structures/entry/' . $key, true);
   }
 
   /**
@@ -205,7 +212,8 @@ abstract class Model extends QueryableModel
    */
   protected function performInsertRequest(?int $relationId = null, array $attributes = [])
   {
-    $response = API::post('builder/structures/' . $relationId . '/entry', $attributes);
+    $response = $this->getConnection()
+      ->post('builder/structures/' . $relationId . '/entry', $attributes);
 
     return $response->entry_id;
   }
@@ -220,7 +228,8 @@ abstract class Model extends QueryableModel
    */
   protected function performUpdateRequest(?int $relationId = null, $key, $attributes = [])
   {
-    return API::put('builder/structures/entry/' . $key, $attributes);
+    return $this->getConnection()
+      ->put('builder/structures/entry/' . $key, $attributes);
   }
 
   /**
@@ -233,7 +242,8 @@ abstract class Model extends QueryableModel
   protected function performDeleteRequest(?int $relationId = null, $key)
   {
     try {
-      API::delete('builder/structures/entry/' . $key);
+      $this->getConnection()
+        ->delete('builder/structures/entry/' . $key);
       return true;
     } catch (Throwable $e) {
       return false;
@@ -245,7 +255,7 @@ abstract class Model extends QueryableModel
    */
   public function getStructureAttribute()
   {
-    return Structure::retrieve($this->relationId);
+    return Structure::retrieve($this->relationId, $this->getConnection());
   }
 
   /**
