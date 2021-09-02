@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 
+use Netflex\API\Contracts\APIClient;
 use Netflex\API\Facades\API;
 use Netflex\Structure\Model;
 
@@ -96,13 +97,16 @@ class Structure
 
   /**
    * @param int $id 
+   * @param APIClient|null $client
    * @return static|null 
    */
-  public static function retrieve($id)
+  public static function retrieve($id, $client = null)
   {
+    $client = $client ?? API::connection();
+
     try {
-      return Cache::rememberForever("structures/$id", function () use ($id) {
-        return new static(API::get("builder/structures/$id/basic", true));
+      return Cache::rememberForever("structures/$id", function () use ($id, $client) {
+        return new static($client->get("builder/structures/$id/basic", true));
       });
     } catch (Exception $e) {
       return null;
