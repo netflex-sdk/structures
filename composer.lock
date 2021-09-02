@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c66a396a0bae0501436a4e2cc21ea969",
+    "content-hash": "4fbe86d0a579dda7e049ef0137c29828",
     "packages": [
         {
             "name": "apility/seotools",
@@ -2029,16 +2029,16 @@
         },
         {
             "name": "netflex/query-builder",
-            "version": "v3.10.0",
+            "version": "v3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netflex-sdk/query-builder.git",
-                "reference": "c1bf61d2b4dec5ff85c1500f34306a1f12833d15"
+                "reference": "f000f50fa633f38682f10fff80004a81aa646741"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/c1bf61d2b4dec5ff85c1500f34306a1f12833d15",
-                "reference": "c1bf61d2b4dec5ff85c1500f34306a1f12833d15",
+                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/f000f50fa633f38682f10fff80004a81aa646741",
+                "reference": "f000f50fa633f38682f10fff80004a81aa646741",
                 "shasum": ""
             },
             "require": {
@@ -2094,9 +2094,9 @@
             ],
             "support": {
                 "issues": "https://github.com/netflex-sdk/query-builder/issues",
-                "source": "https://github.com/netflex-sdk/query-builder/tree/v3.10.0"
+                "source": "https://github.com/netflex-sdk/query-builder/tree/v3.11.0"
             },
-            "time": "2021-09-02T15:00:21+00:00"
+            "time": "2021-09-02T15:14:42+00:00"
         },
         {
             "name": "netflex/support",
