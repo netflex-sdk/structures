@@ -103,9 +103,12 @@ class Structure
   public static function retrieve($id, $client = null)
   {
     $client = $client ?? API::connection();
+    $prefix = $client->getConnectionName();
+    $prefix = $prefix !== 'default' ? $prefix : null;
+    $key = implode('/', array_filter([$prefix, 'structures', $id]));
 
     try {
-      return Cache::rememberForever("structures/$id", function () use ($id, $client) {
+      return Cache::rememberForever($key, function () use ($id, $client) {
         return new static($client->get("builder/structures/$id/basic", true));
       });
     } catch (Exception $e) {
