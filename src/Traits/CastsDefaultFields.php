@@ -16,7 +16,11 @@ trait CastsDefaultFields
   public static function customFieldCasts(Model $model)
   {
     if ($model->castsCustomFields) {
-      $structure = Cache::rememberForever(static::class . '._fields', function () use ($model) {
+      $prefix = $model->getConnectionName();
+      $prefix = $prefix !== 'default' ? $prefix : null;
+      $key = implode('/', array_filter([$prefix, static::class . '._fields']));
+
+      $structure = Cache::rememberForever($key, function () use ($model) {
         return $model->structure;
       });
 
