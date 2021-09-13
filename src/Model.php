@@ -2,16 +2,18 @@
 
 namespace Netflex\Structure;
 
-use Apility\SEOTools\Facades\SEOTools;
 use Exception;
 use Throwable;
 
-use Netflex\Query\QueryableModel;
+use Apility\SEOTools\Facades\SEOTools;
 
+use Netflex\Query\QueryableModel;
 use Netflex\Query\Exceptions\NotFoundException;
 
 use Netflex\Structure\Traits\CastsDefaultFields;
 use Netflex\Structure\Traits\HidesDefaultFields;
+
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -20,14 +22,14 @@ use Netflex\Structure\Traits\HidesDefaultFields;
  * @property string|null $title
  * @property string $url
  * @property int $revision
- * @property string $created
- * @property string $updated
+ * @property Carbon $created
+ * @property Carbon $updated
  * @property bool $published
  * @property string|null $author
  * @property int $userid
  * @property bool $use_time
- * @property string|null $start
- * @property string|null $stop
+ * @property Carbon|null $start
+ * @property Carbon|null $stop
  * @property array $tags
  * @property bool $public
  * @property mixed $authgroups
