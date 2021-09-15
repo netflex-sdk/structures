@@ -22,7 +22,7 @@
     "php": "^7.3",
     "haydenpierce/class-finder": "^0.4.3",
     "netflex/pages": "^3.2.11",
-    "netflex/query-builder": "^3.12",
+    "netflex/query-builder": "^3.13",
     "netflex/support": "^3.1"
   },
   "require-dev": {
