@@ -34,6 +34,15 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayab
         return null;
     }
 
+    /**
+     * @param array $attributes
+     * @return static
+     */
+    public function newFromBuilder($attributes = [])
+    {
+        return new static($attributes);
+    }
+
     public function raw()
     {
         return $this->attributes;
