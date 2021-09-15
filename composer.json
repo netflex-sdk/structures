@@ -20,6 +20,7 @@
   },
   "require": {
     "php": "^7.3",
+    "haydenpierce/class-finder": "^0.4.3",
     "netflex/pages": "^3.2.11",
     "netflex/query-builder": "^3.12",
     "netflex/support": "^3.1"
@@ -32,5 +33,12 @@
     "illuminate/support": "^8.0",
     "larapack/dd": "^1.1",
     "vlucas/phpdotenv": "^3.6"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Netflex\\Structure\\Providers\\StructureServiceProvider"
+      ]
+    }
   }
 }
