@@ -54,22 +54,42 @@ class Structure
   }
 
   /**
+   * @param string $model
+   * @return bool
+   */
+  public static function isModelRegistered(string $model)
+  {
+    $instance = new $model([], false);
+    
+    if ($instance instanceof Model) {
+      return App::bound('structure.' . $instance->getRelationId());
+    }
+
+    return false;
+  }
+
+  /**
    * Register a model
    * @param string $model 
    * @return bool
-   * @throws Exception 
    */
-  public static function registerModel(string $model)
+  public static function registerModel(string $model, bool $overwrite = true)
   {
     $instance = new $model([], false);
 
     if ($instance instanceof Model) {
+      if (!$overwrite) {
+        if (App::bound('structure.' . $instance->getRelationId())) {
+          return false;
+        }
+      }
+
       App::bind('structure.' . $instance->getRelationId(), $model);
 
       return true;
     }
 
-    throw new Exception('Class must be an instance of ' . Model::class);
+    return false;
   }
 
   /**
