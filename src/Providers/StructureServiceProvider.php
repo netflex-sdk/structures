@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 use HaydenPierce\ClassFinder\ClassFinder;
 use Netflex\Structure\Structure;
+use Throwable;
 
 class StructureServiceProvider extends ServiceProvider
 {
@@ -15,8 +16,12 @@ class StructureServiceProvider extends ServiceProvider
         $models = ClassFinder::getClassesInNamespace('App\Models', ClassFinder::RECURSIVE_MODE);
         
         foreach ($models as $model) {
-            if (!Structure::isModelRegistered($model)) {
-                Structure::registerModel($model);
+            try {
+                if (!Structure::isModelRegistered($model)) {
+                    Structure::registerModel($model);
+                }
+            } catch (Throwable $e) {
+                continue;
             }
         }
     }
