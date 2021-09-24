@@ -6,11 +6,16 @@ use Carbon\Carbon;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
 use Illuminate\Support\Collection;
+
 use Netflex\Structure\Contracts\StructureField;
 use Netflex\Support\HtmlString;
 use Netflex\Support\Accessors;
 use Netflex\Structure\Model;
+
+use Netflex\RuleBuilder\DateRules\DateRule;
+use Netflex\RuleBuilder\Exceptions\RuleBuilderException;
 
 /**
  * @property-read int $id
@@ -157,6 +162,12 @@ class Field implements CastsAttributes
         }, array_values(array_filter(explode(',', $value))));
       case 'json':
         return new JSON(json_decode($value, true));
+      case 'rule-builder':
+        try {
+          return DateRule::fromJson($value);
+        } catch (RuleBuilderException $e) {
+          return null;
+        }
       case 'editor-blocks':
         return new EditorBlocks($value);
       case 'date':
@@ -237,6 +248,9 @@ class Field implements CastsAttributes
         break;
       case 'json':
         $value = $value instanceof JSON ? $value->jsonSerialize() : $value;
+        break;
+      case 'rule-builder':
+        $value = $value instanceof DateRule ? $value->jsonSerialize() : $value;
         break;
       case 'editor-blocks':
         $value = $value instanceof EditorBlocks ? $value->jsonSerialize() : $value;
