@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "182a321bdc8821d319e1164961f249bc",
+    "content-hash": "c988003cca3ad7c3a4d5a146f2350db2",
     "packages": [
+        {
+            "name": "apility/rule-builder",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/apility/rule-builder-php.git",
+                "reference": "007d97bda9bb1e29b24a25b509193f00f9bb2d64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/apility/rule-builder-php/zipball/007d97bda9bb1e29b24a25b509193f00f9bb2d64",
+                "reference": "007d97bda9bb1e29b24a25b509193f00f9bb2d64",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.60"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Netflex\\RuleBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tommy Stigen Olsen",
+                    "email": "tommysolsen@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/apility/rule-builder-php/issues",
+                "source": "https://github.com/apility/rule-builder-php/tree/v1.1.0"
+            },
+            "time": "2021-09-24T19:42:16+00:00"
+        },
         {
             "name": "apility/seotools",
             "version": "v1.1.0",

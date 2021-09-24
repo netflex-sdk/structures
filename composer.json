@@ -20,6 +20,7 @@
   },
   "require": {
     "php": "^7.3",
+    "apility/rule-builder": "^1.1",
     "haydenpierce/class-finder": "^0.4.3",
     "netflex/pages": "^3.2.11",
     "netflex/query-builder": "^3.13",
