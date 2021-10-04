@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c988003cca3ad7c3a4d5a146f2350db2",
+    "content-hash": "5f65cace93e1a018f7d7e1bc8a1fe993",
     "packages": [
         {
             "name": "apility/rule-builder",
@@ -726,7 +726,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -888,16 +888,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "862b64ea4ab56e307a1676104a1b93295d347ad0"
+                "reference": "ef73feb5216ef97ab7023cf59c0c8dbbd5505a9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/862b64ea4ab56e307a1676104a1b93295d347ad0",
-                "reference": "862b64ea4ab56e307a1676104a1b93295d347ad0",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/ef73feb5216ef97ab7023cf59c0c8dbbd5505a9d",
+                "reference": "ef73feb5216ef97ab7023cf59c0c8dbbd5505a9d",
                 "shasum": ""
             },
             "require": {
@@ -935,11 +935,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-09-09T13:55:23+00:00"
+            "time": "2021-09-15T14:32:50+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -987,16 +987,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "acc11d6839ddb3b694bc6585177fa5141b70c693"
+                "reference": "327c22dc8f117c07a3e00ecfb4f5011ede445407"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/acc11d6839ddb3b694bc6585177fa5141b70c693",
-                "reference": "acc11d6839ddb3b694bc6585177fa5141b70c693",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/327c22dc8f117c07a3e00ecfb4f5011ede445407",
+                "reference": "327c22dc8f117c07a3e00ecfb4f5011ede445407",
                 "shasum": ""
             },
             "require": {
@@ -1010,7 +1010,7 @@
                 "symfony/console": "^5.1.4"
             },
             "suggest": {
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.6|^3.0).",
+                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.13.3|^3.1.2).",
                 "fakerphp/faker": "Required to use the eloquent factory builder (^1.9.1).",
                 "illuminate/console": "Required to use the database commands (^8.0).",
                 "illuminate/events": "Required to use the observers with Eloquent (^8.0).",
@@ -1051,7 +1051,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-09-13T18:43:43+00:00"
+            "time": "2021-09-28T13:10:43+00:00"
         },
         {
             "name": "illuminate/events",
@@ -1230,7 +1230,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -1276,7 +1276,7 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -1558,16 +1558,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "b0a21c41163381dd9a5abbd68fe85ed7b4247d30"
+                "reference": "3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/b0a21c41163381dd9a5abbd68fe85ed7b4247d30",
-                "reference": "b0a21c41163381dd9a5abbd68fe85ed7b4247d30",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c",
+                "reference": "3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c",
                 "shasum": ""
             },
             "require": {
@@ -1586,8 +1586,8 @@
             },
             "suggest": {
                 "illuminate/filesystem": "Required to use the composer class (^8.0).",
-                "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^1.3|^2.0).",
-                "ramsey/uuid": "Required to use Str::uuid() (^4.0).",
+                "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^1.3|^2.0.2).",
+                "ramsey/uuid": "Required to use Str::uuid() (^4.2.2).",
                 "symfony/process": "Required to use the composer class (^5.1.4).",
                 "symfony/var-dumper": "Required to use the dd function (^5.1.4).",
                 "vlucas/phpdotenv": "Required to use the Env class and env helper (^5.2)."
@@ -1622,7 +1622,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-09-13T18:43:43+00:00"
+            "time": "2021-09-27T14:57:59+00:00"
         },
         {
             "name": "illuminate/translation",
@@ -1935,16 +1935,16 @@
         },
         {
             "name": "netflex/api",
-            "version": "v3.4.1",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netflex-sdk/api.git",
-                "reference": "a90cb10e24cf0b42e8fa84608fb64c48c5f9a3dc"
+                "reference": "79707733e311bc344e42132cb06c612e614c4753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netflex-sdk/api/zipball/a90cb10e24cf0b42e8fa84608fb64c48c5f9a3dc",
-                "reference": "a90cb10e24cf0b42e8fa84608fb64c48c5f9a3dc",
+                "url": "https://api.github.com/repos/netflex-sdk/api/zipball/79707733e311bc344e42132cb06c612e614c4753",
+                "reference": "79707733e311bc344e42132cb06c612e614c4753",
                 "shasum": ""
             },
             "require": {
@@ -1983,9 +1983,9 @@
             "description": "Netflex API library",
             "support": {
                 "issues": "https://github.com/netflex-sdk/api/issues",
-                "source": "https://github.com/netflex-sdk/api/tree/v3.4.1"
+                "source": "https://github.com/netflex-sdk/api/tree/v3.5.0"
             },
-            "time": "2021-09-09T08:23:38+00:00"
+            "time": "2021-09-28T18:15:10+00:00"
         },
         {
             "name": "netflex/foundation",
@@ -2171,16 +2171,16 @@
         },
         {
             "name": "netflex/query-builder",
-            "version": "v3.13.0",
+            "version": "v3.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netflex-sdk/query-builder.git",
-                "reference": "d72677be848e25f036142694e34b7ae630b7e6e9"
+                "reference": "505ca327f34e3d686e4be7f6e77ea810093c5ea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/d72677be848e25f036142694e34b7ae630b7e6e9",
-                "reference": "d72677be848e25f036142694e34b7ae630b7e6e9",
+                "url": "https://api.github.com/repos/netflex-sdk/query-builder/zipball/505ca327f34e3d686e4be7f6e77ea810093c5ea1",
+                "reference": "505ca327f34e3d686e4be7f6e77ea810093c5ea1",
                 "shasum": ""
             },
             "require": {
@@ -2238,9 +2238,9 @@
             ],
             "support": {
                 "issues": "https://github.com/netflex-sdk/query-builder/issues",
-                "source": "https://github.com/netflex-sdk/query-builder/tree/v3.13.0"
+                "source": "https://github.com/netflex-sdk/query-builder/tree/v3.15.0"
             },
-            "time": "2021-09-15T08:50:27+00:00"
+            "time": "2021-10-04T14:03:35+00:00"
         },
         {
             "name": "netflex/support",
@@ -4784,16 +4784,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v5.3.7",
+            "version": "v5.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6"
+                "reference": "6e69f3551c1a3356cf6ea8d019bf039a0f8b6886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6",
-                "reference": "4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/6e69f3551c1a3356cf6ea8d019bf039a0f8b6886",
+                "reference": "6e69f3551c1a3356cf6ea8d019bf039a0f8b6886",
                 "shasum": ""
             },
             "require": {
@@ -4859,7 +4859,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v5.3.7"
+                "source": "https://github.com/symfony/translation/tree/v5.3.9"
             },
             "funding": [
                 {
@@ -4957,16 +4957,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.3.7",
+            "version": "v5.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "3ad5af4aed07d0a0201bbcfc42658fe6c5b2fb8f"
+                "reference": "eaaea4098be1c90c8285543e1356a09c8aa5c8da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/3ad5af4aed07d0a0201bbcfc42658fe6c5b2fb8f",
-                "reference": "3ad5af4aed07d0a0201bbcfc42658fe6c5b2fb8f",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/eaaea4098be1c90c8285543e1356a09c8aa5c8da",
+                "reference": "eaaea4098be1c90c8285543e1356a09c8aa5c8da",
                 "shasum": ""
             },
             "require": {
@@ -5025,7 +5025,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.3.7"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.3.8"
             },
             "funding": [
                 {
@@ -5041,7 +5041,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-04T23:19:25+00:00"
+            "time": "2021-09-24T15:59:58+00:00"
         },
         {
             "name": "voku/portable-ascii",
