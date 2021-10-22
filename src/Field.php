@@ -163,11 +163,15 @@ class Field implements CastsAttributes
       case 'json':
         return new JSON(json_decode($value, true));
       case 'rule-builder':
-        try {
-          return DateRule::fromJson($value);
-        } catch (RuleBuilderException $e) {
-          return null;
+        if ($value) {
+          try {
+            return DateRule::fromJson($value);
+          } catch (RuleBuilderException $e) {
+            return null;
+          }
         }
+
+        return null;
       case 'editor-blocks':
         return new EditorBlocks($value);
       case 'date':
