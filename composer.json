@@ -22,6 +22,9 @@
         "netflex/support": "^4.1"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "5.0.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Netflex\\Structure\\Providers\\StructureServiceProvider"
