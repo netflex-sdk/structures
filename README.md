@@ -1,4 +1,6 @@
-# Netflex Structure
+# Netflex Structures
+
+[READ ONLY] Subtree split of the Netflex Structures component (see [netflex/framework](https://github.con/netflex-sdk/framework))
 
 Eloquent compatible model for working with Netflex structures.
 
