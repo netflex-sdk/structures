@@ -91,14 +91,6 @@ abstract class Model extends QueryableModel
   protected $perPage = 100;
 
   /**
-   * Determines if QueryableModel::all() calls in queries should chunk the result.
-   * NOTICE: If chunking is enabled, the results of QueryableModel::all() will not be cached, and can result in a performance hit on large structures.
-   *
-   * @var bool
-   */
-  protected $useChunking = false;
-
-  /**
    * Indicates if the model should hide default fields
    *
    * @var bool
