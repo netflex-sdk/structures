@@ -23,6 +23,11 @@ class Entry extends Model
         };
     }
 
+    public function usesChunking()
+    {
+        return $this->useChunking ?? false;
+    }
+
     /**
      * @return Structure|null
      */
