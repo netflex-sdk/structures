@@ -50,13 +50,17 @@ trait Localizable
         return $property;
     }
 
-    protected function getLocalizedArray(array $array)
+    protected function getLocalizedArray($array)
     {
-        $model = new class() extends Model implements ArrayAccess
-        {
-            use Localizable;
-        };
+        if (is_array($array)) {
+            $model = new class() extends Model implements ArrayAccess
+            {
+                use Localizable;
+            };
 
-        return $model->newFromBuilder($array);
+            return $model->newFromBuilder($array);
+        }
+
+        return $array;
     }
 }
