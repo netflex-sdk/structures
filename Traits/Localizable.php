@@ -12,8 +12,22 @@ trait Localizable
     {
         $locale = App::getLocale();
         $parts = explode('_', $locale);
-        $lang = $parts[0];
-        return [$key . '_' . $locale, $key . '_' . $lang, $key];
+        $keys = [];
+
+        if (count($parts)) {
+            $lang = $parts[0];
+            $keys = [$key . '_' . $locale, $key . '_' . $lang];
+        }
+
+        $fallbackLocale = App::getFallbackLocale();
+
+        if (count($parts)) {
+            $parts = explode('_', $fallbackLocale);
+            $lang = $parts[0];
+            return array_merge($keys, [$key . '_' . $fallbackLocale, $key . '_' . $lang, $key]);
+        }
+
+        return array_merge($keys, [$key]);
     }
 
     public function getAttribute($key)
