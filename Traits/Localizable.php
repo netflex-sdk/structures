@@ -8,6 +8,19 @@ use Netflex\Structure\Model;
 
 trait Localizable
 {
+    protected $reservedKeys = [
+        'name',
+    ];
+
+    protected function isKeyReserved($key)
+    {
+        if (property_exists($this, 'isLocalizedArray') && $this->isLocalizedArray) {
+            return !in_array($key, $this->reservedKeys);
+        }
+
+        return true;
+    }
+
     protected function getLocalizedKeys($key)
     {
         $locale = App::getLocale();
@@ -21,10 +34,12 @@ trait Localizable
 
         $fallbackLocale = App::getFallbackLocale();
 
-        if (count($parts)) {
-            $parts = explode('_', $fallbackLocale);
-            $lang = $parts[0];
-            return array_merge($keys, [$key . '_' . $fallbackLocale, $key . '_' . $lang, $key]);
+        if ($fallbackLocale !== $locale && !$this->isKeyReserved($key)) {
+            if (count($parts)) {
+                $parts = explode('_', $fallbackLocale);
+                $lang = $parts[0];
+                return array_merge($keys, [$key . '_' . $fallbackLocale, $key . '_' . $lang, $key]);
+            }
         }
 
         return array_merge($keys, [$key]);
@@ -56,6 +71,7 @@ trait Localizable
             $model = new class() extends Model implements ArrayAccess
             {
                 use Localizable;
+                protected $isLocalizedArray = true;
             };
 
             return $model->newFromBuilder($array);
