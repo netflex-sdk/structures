@@ -29,6 +29,7 @@ use Netflex\Support\Accessors;
  * @property-read string|null $value_tags
  * @property-read string|null $value_variants
  * @property-read string|null $value_author
+ * @property-read string|null $canonical_page_id
  * @property-read bool $hide_url
  * @property-read mixed $generate_sitemap
  * @property-read string|null $image
