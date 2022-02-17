@@ -8,7 +8,8 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 use Illuminate\Support\Collection;
-
+use Netflex\Files\File;
+use Netflex\Structure\File as StructureFile;
 use Netflex\Structure\Contracts\StructureField;
 use Netflex\Support\HtmlString;
 use Netflex\Support\Accessors;
@@ -233,6 +234,12 @@ class Field implements CastsAttributes
       case 'checkbox':
         $value = $value ? '1' : '0';
         break;
+      case 'file':
+      case 'image':
+        if ($value instanceof File || $attributes instanceof StructureFile || $attributes instanceof Image) {
+          $value = $value->id;
+          break;
+        }
       case 'integer':
       case 'entry':
       case 'customer':
