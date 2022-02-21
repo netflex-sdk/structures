@@ -132,7 +132,7 @@ class Field implements CastsAttributes
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
       case 'file':
-        return File::cast($value);
+        return StructureFile::cast($value);
       case 'image':
         return Image::cast($value);
       case 'editor-small':
