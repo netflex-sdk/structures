@@ -79,37 +79,4 @@ trait Localizable
 
         return $array;
     }
-
-    protected function jsonSerializeLocalized($array)
-    {
-        $keys = collect($array)->keys();
-        $localizableKeys = $keys->filter(function ($key) {
-            return strpos($key, '_' . App::getLocale()) !== false;
-        });
-
-        $actualKeys = $keys->diff($localizableKeys);
-
-        $keys = [];
-        $json = [];
-
-        foreach ($actualKeys as $key) {
-            $localizedKey = $key . '_' . App::getLocale();
-            if ($localizableKeys->contains($localizedKey) && $array[$localizedKey] ?? null) {
-                $json[$key] = $array[$localizedKey];
-            } else {
-                $json[$key] = $array[$key];
-            }
-
-            if (is_array($json[$key])) {
-                $json[$key] = $this->localize($json[$key]);
-            }
-        }
-
-        return $json;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->jsonSerializeLocalized(parent::jsonSerialize());
-    }
 }
