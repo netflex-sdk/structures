@@ -72,6 +72,7 @@ trait Localizable
             {
                 use Localizable;
                 protected $isLocalizedArray = true;
+                protected $castsCustomFields = false;
             };
 
             return $model->newFromBuilder($array);
