@@ -14,6 +14,8 @@ use Netflex\Structure\Traits\CastsDefaultFields;
 use Netflex\Structure\Traits\HidesDefaultFields;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -320,5 +322,44 @@ abstract class Model extends QueryableModel
   public static function register()
   {
     return Structure::registerModel(static::class);
+  }
+
+  /**
+   * Mass import entries
+   *
+   * @param array|Collection $entries
+   * @param string|null $notify Email to notify when the entries are imported
+   * @return bool
+   */
+  public static function import($entries, $notify = null)
+  {
+    $instance = new static;
+    $client = $instance->getConnection();
+
+    if (!($entries instanceof Collection)) {
+      $entries = collect($entries);
+    }
+
+    $payload = [
+      'entries' => $entries->map(function ($entry) use ($instance) {
+        if (!is_array($entry)) {
+          $entry = $entry->toArray();
+        }
+        $entry['directory_id'] = $instance->relationId;
+        $entry['revision_publish'] = true;
+        if (!isset($entry['name'])) {
+          $entry['name'] =  Str::uuid();
+        }
+        return $entry;
+      })->toArray(),
+    ];
+
+    if ($notify) {
+      $payload['notify_mail'] = $notify;
+    }
+
+    $client->post('builder/structures/' . $instance->relationId . '/import', $payload);
+
+    return true;
   }
 }
