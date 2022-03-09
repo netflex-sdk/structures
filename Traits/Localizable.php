@@ -72,7 +72,13 @@ trait Localizable
             {
                 use Localizable;
                 protected $isLocalizedArray = true;
-                protected $castsCustomFields = false;
+                /**
+                 * @return null
+                 */
+                public function getStructureAttribute()
+                {
+                    return null;
+                }
             };
 
             return $model->newFromBuilder($array);
