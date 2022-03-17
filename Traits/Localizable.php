@@ -63,6 +63,28 @@ trait Localizable
         return array_merge($keys, [$key]);
     }
 
+    protected function getLocalizedArray($array)
+    {
+        if (is_array($array)) {
+            $model = new class() extends Model implements ArrayAccess
+            {
+                use Localizable;
+                protected $isLocalizedArray = true;
+                /**
+                 * @return null
+                 */
+                public function getStructureAttribute()
+                {
+                    return null;
+                }
+            };
+
+            return $model->newFromBuilder($array);
+        }
+
+        return $array;
+    }
+
     public function getAttribute($key)
     {
         $getAttribute = function ($key) {
