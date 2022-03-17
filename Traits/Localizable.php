@@ -4,7 +4,9 @@ namespace Netflex\Structure\Traits;
 
 use ArrayAccess;
 use Illuminate\Support\Facades\App;
+use Netflex\Query\QueryableModel;
 use Netflex\Structure\Model;
+use Netflex\Support\ReactiveObject;
 
 trait Localizable
 {
@@ -63,8 +65,21 @@ trait Localizable
 
     public function getAttribute($key)
     {
+        $getAttribute = function ($key) {
+            if ($this instanceof QueryableModel) {
+                return parent::getAttribute($key);
+            }
+
+            if ($this instanceof ReactiveObject) {
+                return parent::__get($key);
+            }
+
+            return $this->{$key};
+        };
+
+
         foreach ($this->getLocalizedKeys($key) as $attribute) {
-            if ($property = parent::getAttribute($attribute)) {
+            if ($property = $getAttribute($attribute)) {
                 if (is_array($property)) {
                     return array_map(fn ($item) => $this->getLocalizedArray($item), $property);
                 }
@@ -72,7 +87,7 @@ trait Localizable
             }
         }
 
-        $property = parent::getAttribute($attribute);
+        $property = $getAttribute($attribute);
 
         if (is_array($property)) {
             return array_map(fn ($item) => $this->getLocalizedArray($item), $property);
@@ -81,25 +96,8 @@ trait Localizable
         return $property;
     }
 
-    protected function getLocalizedArray($array)
+    public function __get($key)
     {
-        if (is_array($array)) {
-            $model = new class() extends Model implements ArrayAccess
-            {
-                use Localizable;
-                protected $isLocalizedArray = true;
-                /**
-                 * @return null
-                 */
-                public function getStructureAttribute()
-                {
-                    return null;
-                }
-            };
-
-            return $model->newFromBuilder($array);
-        }
-
-        return $array;
+        return $this->getAttribute($key);
     }
 }
