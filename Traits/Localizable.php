@@ -8,9 +8,25 @@ use Netflex\Structure\Model;
 
 trait Localizable
 {
+    protected $forcedLocale = null;
+
     protected $reservedKeys = [
         'name',
     ];
+
+    protected function setLocale($locale)
+    {
+        $this->forcedLocale = $locale;
+    }
+
+    protected function getLocale()
+    {
+        if ($this->forcedLocale) {
+            return $this->forcedLocale;
+        }
+
+        return App::getLocale();
+    }
 
     protected function isKeyReserved($key)
     {
@@ -23,7 +39,7 @@ trait Localizable
 
     protected function getLocalizedKeys($key)
     {
-        $locale = App::getLocale();
+        $locale = $this->getLocale();
         $parts = explode('_', $locale);
         $keys = [];
 
