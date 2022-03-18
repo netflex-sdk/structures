@@ -118,106 +118,108 @@ class Field implements CastsAttributes
    */
   public function get($model, $keys, $value, $attributes)
   {
-    switch ($this->type) {
-      case 'checkbox':
-        return boolval(intval($value));
-      case 'customer-group':
-      case 'entry':
-      case 'customer':
-        return $value ? intval($value) : null;
-      case 'integer':
-        return intval($value);
-      case 'float':
-        return floatval($value);
-      case 'tags':
-        return array_values(array_filter(explode(',', $value)));
-      case 'file':
-        return StructureFile::cast($value);
-      case 'image':
-        return Image::cast($value);
-      case 'editor-small':
-      case 'editor-large':
-        return $value ? new HtmlString($value) : null;
-      case 'multiselect':
-        return array_map(function ($value) {
-          if (preg_match('/(^\d+(?:\.\d+)?$)/', trim($value))) {
-            $value = trim($value);
-
-            if (strpos($value, '.') !== false) {
-              return floatval($value);
-            }
-
-            return intval($value);
-          }
-
-          return $value;
-        }, array_values(array_filter(explode(',', $value), function ($value) {
-          return is_string($value) ? strlen(trim($value)) : $value !== null;
-        })));
-      case 'customer-groups':
-      case 'entries':
-      case 'entriessortable':
-      case 'customers':
-        return array_map(function ($value) {
+    return once(function () use ($model, $keys, $value, $attributes) {
+      switch ($this->type) {
+        case 'checkbox':
+          return boolval(intval($value));
+        case 'customer-group':
+        case 'entry':
+        case 'customer':
           return $value ? intval($value) : null;
-        }, array_values(array_filter(explode(',', $value))));
-      case 'json':
-        return new JSON(json_decode($value, true));
-      case 'rule-builder':
-        if ($value) {
-          try {
-            return DateRule::fromJson($value);
-          } catch (RuleBuilderException $e) {
-            return null;
-          }
-        }
+        case 'integer':
+          return intval($value);
+        case 'float':
+          return floatval($value);
+        case 'tags':
+          return array_values(array_filter(explode(',', $value)));
+        case 'file':
+          return StructureFile::cast($value);
+        case 'image':
+          return Image::cast($value);
+        case 'editor-small':
+        case 'editor-large':
+          return $value ? new HtmlString($value) : null;
+        case 'multiselect':
+          return array_map(function ($value) {
+            if (preg_match('/(^\d+(?:\.\d+)?$)/', trim($value))) {
+              $value = trim($value);
 
-        return null;
-      case 'editor-blocks':
-        return new EditorBlocks($value);
-      case 'date':
-        return $value ? Carbon::parse($value)->startOfDay() : null;
-      case 'datetime':
-        return $value ? Carbon::parse($value) : null;
-      case 'matrix':
-        $field = $this->getField($model, $keys);
+              if (strpos($value, '.') !== false) {
+                return floatval($value);
+              }
 
-        return Collection::make($value)
-          ->map(function ($block) use ($model, $keys, $value, $field) {
-            $blockField = $this->getBlockField($block, $field);
-
-            return $blockField->get($model, [$keys, $block['type']], $block, $blockField->attributes);
-          })
-          ->toArray();
-      case 'matrix_block':
-        $field = $this->getField($model, $keys);
-
-        return Collection::make($field->fields)
-          ->mapWithKeys(function ($fieldAttributes) use ($model, $value, $keys) {
-            $field = new static($fieldAttributes);
-
-            $fieldName = $fieldAttributes['alias'];
-
-            $fieldValue = $value[$fieldName] ?? null;
-
-            return [
-              $fieldName => $field->get($model, array_merge($keys, [$fieldName]), $fieldValue, $fieldAttributes),
-            ];
-          })
-          ->merge([
-            'type' => is_object($value) ? $value->type : $value['type'],
-          ])
-          ->map(function ($item) {
-            if (!($item instanceof StructureField)) {
-              return $item instanceof Arrayable ? $item->toArray() : $item;
+              return intval($value);
             }
 
-            return $item;
-          })
-          ->all();
-      default:
-        return $value;
-    }
+            return $value;
+          }, array_values(array_filter(explode(',', $value), function ($value) {
+            return is_string($value) ? strlen(trim($value)) : $value !== null;
+          })));
+        case 'customer-groups':
+        case 'entries':
+        case 'entriessortable':
+        case 'customers':
+          return array_map(function ($value) {
+            return $value ? intval($value) : null;
+          }, array_values(array_filter(explode(',', $value))));
+        case 'json':
+          return new JSON(json_decode($value, true));
+        case 'rule-builder':
+          if ($value) {
+            try {
+              return DateRule::fromJson($value);
+            } catch (RuleBuilderException $e) {
+              return null;
+            }
+          }
+
+          return null;
+        case 'editor-blocks':
+          return new EditorBlocks($value);
+        case 'date':
+          return $value ? Carbon::parse($value)->startOfDay() : null;
+        case 'datetime':
+          return $value ? Carbon::parse($value) : null;
+        case 'matrix':
+          $field = $this->getField($model, $keys);
+
+          return Collection::make($value)
+            ->map(function ($block) use ($model, $keys, $value, $field) {
+              $blockField = $this->getBlockField($block, $field);
+
+              return $blockField->get($model, [$keys, $block['type']], $block, $blockField->attributes);
+            })
+            ->toArray();
+        case 'matrix_block':
+          $field = $this->getField($model, $keys);
+
+          return Collection::make($field->fields)
+            ->mapWithKeys(function ($fieldAttributes) use ($model, $value, $keys) {
+              $field = new static($fieldAttributes);
+
+              $fieldName = $fieldAttributes['alias'];
+
+              $fieldValue = $value[$fieldName] ?? null;
+
+              return [
+                $fieldName => $field->get($model, array_merge($keys, [$fieldName]), $fieldValue, $fieldAttributes),
+              ];
+            })
+            ->merge([
+              'type' => is_object($value) ? $value->type : $value['type'],
+            ])
+            ->map(function ($item) {
+              if (!($item instanceof StructureField)) {
+                return $item instanceof Arrayable ? $item->toArray() : $item;
+              }
+
+              return $item;
+            })
+            ->all();
+        default:
+          return $value;
+      }
+    });
   }
 
   /**

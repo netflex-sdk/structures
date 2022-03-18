@@ -15,33 +15,35 @@ trait CastsDefaultFields
    */
   public static function customFieldCasts(Model $model)
   {
-    if ($model->castsCustomFields) {
-      $prefix = $model->getConnectionName();
-      $prefix = $prefix !== 'default' ? $prefix : null;
-      $key = implode('/', array_filter([$prefix, static::class . '._fields']));
+    return once(function () use ($model) {
+      if ($model->castsCustomFields) {
+        $prefix = $model->getConnectionName();
+        $prefix = $prefix !== 'default' ? $prefix : null;
+        $key = implode('/', array_filter([$prefix, static::class . '._fields']));
 
-      $structure = Cache::rememberForever($key, function () use ($model) {
-        return $model->structure;
-      });
+        $structure = Cache::rememberForever($key, function () use ($model) {
+          return $model->structure;
+        });
 
 
-      if ($structure) {
-        return $structure->fields->mapWithKeys(function (Field $field) use ($model) {
-          $method = Str::camel(implode('_', ['get', $field->alias, 'attribute']));
-          $accessor = method_exists($model, $method);
+        if ($structure) {
+          return $structure->fields->mapWithKeys(function (Field $field) use ($model) {
+            $method = Str::camel(implode('_', ['get', $field->alias, 'attribute']));
+            $accessor = method_exists($model, $method);
 
-          if (isset($model->castIfAccessorExists) && $model->castIfAccessorExists) {
-            $accessor = false;
-          }
+            if (isset($model->castIfAccessorExists) && $model->castIfAccessorExists) {
+              $accessor = false;
+            }
 
-          return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
-        })
-          ->filter()
-          ->toArray();
+            return [$field->alias => !$accessor ? (Field::class . ':' . $field->type) : null];
+          })
+            ->filter()
+            ->toArray();
+        }
       }
-    }
 
-    return [];
+      return [];
+    });
   }
 
   public static function bootCastsDefaultFields()
