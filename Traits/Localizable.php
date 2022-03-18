@@ -41,68 +41,62 @@ trait Localizable
 
     protected function getLocalizedKeys($key)
     {
-        return once(function () use ($key) {
-            $locale = $this->getLocale();
-            $parts = explode('_', $locale);
-            $keys = [];
+        $locale = $this->getLocale();
+        $parts = explode('_', $locale);
+        $keys = [];
 
+        if (count($parts)) {
+            $lang = $parts[0];
+            $keys = [$key . '_' . $locale, $key . '_' . $lang];
+        }
+
+        $fallbackLocale = App::getFallbackLocale();
+
+        if ($fallbackLocale !== $locale && !$this->isKeyReserved($key)) {
             if (count($parts)) {
+                $parts = explode('_', $fallbackLocale);
                 $lang = $parts[0];
-                $keys = [$key . '_' . $locale, $key . '_' . $lang];
+                return array_merge($keys, [$key . '_' . $fallbackLocale, $key . '_' . $lang, $key]);
             }
+        }
 
-            $fallbackLocale = App::getFallbackLocale();
-
-            if ($fallbackLocale !== $locale && !$this->isKeyReserved($key)) {
-                if (count($parts)) {
-                    $parts = explode('_', $fallbackLocale);
-                    $lang = $parts[0];
-                    return array_merge($keys, [$key . '_' . $fallbackLocale, $key . '_' . $lang, $key]);
-                }
-            }
-
-            return array_merge($keys, [$key]);
-        });
+        return array_merge($keys, [$key]);
     }
 
     protected function getLocalizedArray($array)
     {
-        return once(function () use ($array) {
-            if (is_array($array)) {
-                $model = new class() extends Model implements ArrayAccess
+        if (is_array($array)) {
+            $model = new class() extends Model implements ArrayAccess
+            {
+                use Localizable;
+                protected $isLocalizedArray = true;
+                /**
+                 * @return null
+                 */
+                public function getStructureAttribute()
                 {
-                    use Localizable;
-                    protected $isLocalizedArray = true;
-                    /**
-                     * @return null
-                     */
-                    public function getStructureAttribute()
-                    {
-                        return null;
-                    }
-                };
+                    return null;
+                }
+            };
 
-                return $model->newFromBuilder($array);
-            }
+            return $model->newFromBuilder($array);
+        }
 
-            return $array;
-        });
+        return $array;
     }
 
     public function getAttribute($key)
     {
         $getAttribute = function ($key) {
-            return once(function () use ($key) {
-                if ($this instanceof QueryableModel) {
-                    return parent::getAttribute($key);
-                }
+            if ($this instanceof QueryableModel) {
+                return parent::getAttribute($key);
+            }
 
-                if ($this instanceof ReactiveObject) {
-                    return parent::__get($key);
-                }
+            if ($this instanceof ReactiveObject) {
+                return parent::__get($key);
+            }
 
-                return $this->{$key};
-            });
+            return $this->{$key};
         };
 
 

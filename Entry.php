@@ -13,18 +13,16 @@ class Entry extends Model
      */
     protected function getMapper()
     {
-        return once(function () {
-            return function ($attributes) {
-                if (isset($attributes['directory_id'])) {
-                    $relationId = $attributes['directory_id'];
+        return function ($attributes) {
+            if (isset($attributes['directory_id'])) {
+                $relationId = $attributes['directory_id'];
 
-                    return Structure::resolveModel($relationId)
-                        ->newFromBuilder($attributes);
-                }
+                return Structure::resolveModel($relationId)
+                    ->newFromBuilder($attributes);
+            }
 
-                return (new static)->newFromBuilder($attributes);
-            };
-        });
+            return (new static)->newFromBuilder($attributes);
+        };
     }
 
     public function usesChunking()
@@ -37,7 +35,7 @@ class Entry extends Model
      */
     public function getStructureAttribute()
     {
-        return once(fn () => Structure::retrieve($this->directory_id));
+        return Structure::retrieve($this->directory_id);
     }
 
     /**
