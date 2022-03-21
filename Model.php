@@ -328,13 +328,17 @@ abstract class Model extends QueryableModel
    * Mass import entries
    *
    * @param array|Collection $entries
-   * @param string|null $notify Email to notify when the entries are imported
+   * @param array[string|null $config
    * @return bool
    */
-  public static function import($entries, $notify = null)
+  public static function import($entries, $config = [])
   {
     $instance = new static;
     $client = $instance->getConnection();
+
+    if (is_string($config)) {
+      $config = ['notify_mail' => $config];
+    }
 
     if (!($entries instanceof Collection)) {
       $entries = collect($entries);
@@ -354,8 +358,10 @@ abstract class Model extends QueryableModel
       })->toArray(),
     ];
 
-    if ($notify) {
-      $payload['notify_mail'] = $notify;
+    foreach ($config as $key => $value) {
+      if ($key !== 'entries') {
+        $payload[$key] = $value;
+      }
     }
 
     $client->post('builder/structures/' . $instance->relationId . '/import', $payload);

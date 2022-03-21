@@ -42,11 +42,18 @@ class Entry extends Model
      * Mass import entries
      *
      * @param array|Collection $entries
-     * @param string|null $notify Email to notify when the entries are imported
+     * @param array[string|null $config
      * @return bool
      */
-    public static function import($entries, $notify = null)
+    public static function import($entries, $config = null)
     {
+        $payload = is_array($config) ? $config : [];
+
+        if (is_string($config)) {
+            $payload['notify_mail'] = $config;
+            $config = [];
+        }
+
         $instance = new static;
         $client = $instance->getConnection();
 
@@ -70,10 +77,6 @@ class Entry extends Model
             $payload = [
                 'entries' => $entries->toArray(),
             ];
-
-            if ($notify) {
-                $payload['notify_mail'] = $notify;
-            }
 
             $client->post('/api/v1/structure/' . $relationId . '/entries/import', $payload);
         }
