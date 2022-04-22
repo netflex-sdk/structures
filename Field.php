@@ -123,6 +123,7 @@ class Field implements CastsAttributes
         return boolval(intval($value));
       case 'customer-group':
       case 'entry':
+      case 'automation-email':
       case 'customer':
         return $value ? intval($value) : null;
       case 'integer':
@@ -242,6 +243,7 @@ class Field implements CastsAttributes
         }
       case 'integer':
       case 'entry':
+      case 'automation-email':
       case 'customer':
       case 'float':
         $value = (string) $value;
