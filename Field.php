@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 use Illuminate\Support\Collection;
 use Netflex\Files\File;
+use Netflex\Notifications\Automation\AutomationEmail;
 use Netflex\Structure\File as StructureFile;
 use Netflex\Structure\Contracts\StructureField;
 use Netflex\Support\HtmlString;
@@ -123,7 +124,6 @@ class Field implements CastsAttributes
         return boolval(intval($value));
       case 'customer-group':
       case 'entry':
-      case 'automation-email':
       case 'customer':
         return $value ? intval($value) : null;
       case 'integer':
@@ -132,6 +132,8 @@ class Field implements CastsAttributes
         return floatval($value);
       case 'tags':
         return array_values(array_filter(explode(',', $value)));
+      case 'automation-email':
+        return AutomationEmail::find($value);
       case 'file':
         return StructureFile::cast($value);
       case 'image':
@@ -241,6 +243,12 @@ class Field implements CastsAttributes
           $value = $value->id;
           break;
         }
+      case 'automation-email':
+        if ($value instanceof AutomationEmail) {
+          $value = $value->id;
+        }
+        $value = (string) $value;
+        break;
       case 'integer':
       case 'entry':
       case 'automation-email':
