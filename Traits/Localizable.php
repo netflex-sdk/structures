@@ -33,10 +33,10 @@ trait Localizable
     protected function isKeyReserved($key)
     {
         if (property_exists($this, 'isLocalizedArray') && $this->isLocalizedArray) {
-            return false;
+            return !in_array($key, $this->reservedKeys);
         }
 
-        return in_array($key, $this->reservedKeys);
+        return true;
     }
 
     protected function getLocalizedKeys($key)
