@@ -195,7 +195,7 @@ abstract class Model extends QueryableModel
 
     try {
       $this->attributes = $this->getConnection()
-        ->get("builder/structures/entry/{$this->getKey()}/revision/{$revisionId}", true);
+        ->get("builder/structures/entry/{$this->attributes['id']}/revision/{$revisionId}", true);
       return $this;
     } catch (Throwable $e) {
       return null;
