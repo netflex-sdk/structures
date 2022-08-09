@@ -129,12 +129,16 @@ class Structure
     $key = implode('/', array_filter([$prefix, 'structures', $id]));
 
     try {
-      return Cache::rememberForever($key, function () use ($id, $client) {
-        return new static($client->get("builder/structures/$id/basic", true));
-      });
+      if ($id) {
+        return Cache::rememberForever($key, function () use ($id, $client) {
+          return new static($client->get("builder/structures/$id/basic", true));
+        });
+      }
     } catch (Exception $e) {
       return null;
     }
+
+    return null;
   }
 
   public function getIdAttribute($id)
