@@ -97,7 +97,7 @@ class Field implements CastsAttributes
    */
   protected function getField(Model $model, $key)
   {
-    return $this->findField($model->structure->fields, Collection::make($key));
+    return $this->findField($model->getStructureAttribute()->fields, Collection::make($key));
   }
 
   protected function getBlockField(array $block, Field $field)
