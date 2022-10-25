@@ -17,9 +17,9 @@
     "require": {
         "apility/rule-builder": "^1.1",
         "haydenpierce/class-finder": "^0.4.3",
-        "netflex/pages": "^4.14",
-        "netflex/query-builder": "^4.14",
-        "netflex/support": "^4.14",
+        "netflex/pages": "^4.15",
+        "netflex/query-builder": "^4.15",
+        "netflex/support": "^4.15",
         "php": "^7.4|^8.0"
     },
     "extra": {
