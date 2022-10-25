@@ -17,14 +17,14 @@
     "require": {
         "apility/rule-builder": "^1.1",
         "haydenpierce/class-finder": "^0.4.3",
-        "netflex/pages": "^4.15",
-        "netflex/query-builder": "^4.15",
-        "netflex/support": "^4.15",
+        "netflex/pages": "^4.15.1",
+        "netflex/query-builder": "^4.15.1",
+        "netflex/support": "^4.15.1",
         "php": "^7.4|^8.0"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.14.x-dev"
+            "dev-master": "4.16.x-dev"
         },
         "laravel": {
             "providers": [
