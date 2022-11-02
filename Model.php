@@ -16,6 +16,7 @@ use Netflex\Structure\Traits\HidesDefaultFields;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Netflex\Signups\Signup;
 
 /**
  * @property int $id
@@ -367,5 +368,15 @@ abstract class Model extends QueryableModel
     $client->post('builder/structures/' . $instance->relationId . '/import', $payload);
 
     return true;
+  }
+
+  public function getSignupsAttribute()
+  {
+    return Signup::forEntry($this);
+  }
+
+  public function createSignup(array $payload = []): Signup
+  {
+    return Signup::createForEntry($this, $payload);
   }
 }
