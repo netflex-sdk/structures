@@ -295,6 +295,12 @@ abstract class Model extends QueryableModel
 
     /** @var static */
     if ($model = $query->first()) {
+      if ($field !== 'url') {
+        if ($model->{$field} != $rawValue) {
+          throw new NotFoundException;
+        }
+      }
+
       return static::resolvedRouteBinding($model);
     }
 
@@ -326,10 +332,45 @@ abstract class Model extends QueryableModel
   }
 
   /**
+   * Mass import entries synchronously
+   *
+   * @param array|Collection $entries
+   * @param  array|string|null $config Config array, or notify email, or notify url
+   * @return bool
+   */
+  public static function importSync($entries, $config = [])
+  {
+    $instance = new static;
+
+    if (is_string($config)) {
+      if (filter_var($config, FILTER_VALIDATE_EMAIL)) {
+        $config = ['notify_mail' => $config];
+      }
+
+      if (filter_var($config, FILTER_VALIDATE_URL)) {
+        $config = ['webhook' => $config];
+      }
+    }
+
+    if (!is_array($config)) {
+      $config = [];
+    }
+
+    if (method_exists($instance, 'getConnectionName') && $instance->getConnectionName() !== 'default') {
+      $prefix = $instance->getConnectionName();
+      $config['prefix'] = $prefix;
+    }
+
+    $config['sync'] = true;
+
+    return static::import($entries, $config);
+  }
+
+  /**
    * Mass import entries
    *
    * @param array|Collection $entries
-   * @param array[string|null $config
+   * @param  array|string|null $config Config array, or notify email, or notify url
    * @return bool
    */
   public static function import($entries, $config = [])
@@ -338,7 +379,17 @@ abstract class Model extends QueryableModel
     $client = $instance->getConnection();
 
     if (is_string($config)) {
-      $config = ['notify_mail' => $config];
+      if (filter_var($config, FILTER_VALIDATE_EMAIL)) {
+        $config = ['notify_mail' => $config];
+      }
+
+      if (filter_var($config, FILTER_VALIDATE_URL)) {
+        $config = ['webhook' => $config];
+      }
+    }
+
+    if (!is_array($config)) {
+      $config = [];
     }
 
     if (!($entries instanceof Collection)) {
@@ -352,7 +403,7 @@ abstract class Model extends QueryableModel
         }
         $entry['directory_id'] = $instance->relationId;
         $entry['revision_publish'] = true;
-        if (!isset($entry['name'])) {
+        if (!isset($entry['name']) && !isset($entry['id'])) {
           $entry['name'] =  Str::uuid();
         }
         return $entry;
