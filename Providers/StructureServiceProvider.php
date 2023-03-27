@@ -19,22 +19,16 @@ class StructureServiceProvider extends ServiceProvider
         $classFinder = fn () => ClassFinder::getClassesInNamespace('App\Models', ClassFinder::RECURSIVE_MODE);
 
         if(in_array(App::environment(), ['master', 'dev'])) {
-          $models = Cache::rememberForever('', $classFinder);
+          $models = Cache::rememberForever('netflex/structure/models', $classFinder);
         } else {
           $models = $classFinder();
         }
 
         foreach ($models as $model) {
             try {
-              $isModelRegistered = App::measure('isModelRegistered' . $model, function () use ($model) {
-                return !Structure::isModelRegistered($model);
-              });
-
-                if ($isModelRegistered) {
-                  App::measure('registerModel', function () use ($model) {
-                    Structure::registerModel($model);
-                  });
-                }
+              if (!Structure::isModelRegistered($model)) {
+                Structure::registerModel($model);
+              }
             } catch (Throwable $e) {
                 continue;
             }
