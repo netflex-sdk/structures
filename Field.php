@@ -241,8 +241,8 @@ class Field implements CastsAttributes
       case 'image':
         if ($value instanceof File || $attributes instanceof StructureFile || $attributes instanceof Image) {
           $value = $value->id;
-          break;
         }
+        break;
       case 'automation-email':
         if ($value instanceof AutomationEmail) {
           $value = $value->id;
@@ -251,7 +251,6 @@ class Field implements CastsAttributes
         break;
       case 'integer':
       case 'entry':
-      case 'automation-email':
       case 'customer':
       case 'float':
         $value = (string) $value;
