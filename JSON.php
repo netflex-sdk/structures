@@ -35,7 +35,6 @@ class JSON implements JsonSerializable, Jsonable, Htmlable, StructureField
     return json_encode($this->jsonSerialize(), $options);
   }
 
-  #[\ReturnTypeWillChange]
   public function jsonSerialize()
   {
     return $this->attributes;
