@@ -64,7 +64,6 @@ class File implements ArrayAccess, MediaUrlResolvable, JsonSerializable, Arrayab
         }
     }
 
-    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
