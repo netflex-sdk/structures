@@ -210,7 +210,7 @@ abstract class Model extends QueryableModel
    * @param mixed $key
    * @return array|null
    */
-  protected function performRetrieveRequest(?int $relationId = null, $key)
+  protected function performRetrieveRequest(?int $relationId = null, mixed $key = null)
   {
     return $this->getConnection()
       ->get('builder/structures/entry/' . $key, true);
@@ -239,7 +239,7 @@ abstract class Model extends QueryableModel
    * @param array $attributes
    * @return void
    */
-  protected function performUpdateRequest(?int $relationId = null, $key, $attributes = [])
+  protected function performUpdateRequest(?int $relationId = null, mixed $key = null, array $attributes = [])
   {
     return $this->getConnection()
       ->put('builder/structures/entry/' . $key, $attributes);
@@ -252,7 +252,7 @@ abstract class Model extends QueryableModel
    * @param mixed $key
    * @return bool
    */
-  protected function performDeleteRequest(?int $relationId = null, $key)
+  protected function performDeleteRequest(?int $relationId = null, mixed $key = null)
   {
     try {
       $this->getConnection()

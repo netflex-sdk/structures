@@ -42,6 +42,7 @@ class EditorBlocks implements JsonSerializable, Jsonable, Htmlable, StructureFie
     });
   }
 
+  #[\ReturnTypeWillChange]
   public function jsonSerialize()
   {
     return count($this->attributes) ? $this->attributes : null;
