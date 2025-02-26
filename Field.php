@@ -122,6 +122,10 @@ class Field implements CastsAttributes
     switch ($this->type) {
       case 'checkbox':
         return boolval(intval($value));
+      case 'checkbox-group':
+        return $value
+          ? array_values(array_filter(explode(',', $value)))
+          : [];
       case 'customer-group':
       case 'entry':
       case 'customer':
@@ -260,6 +264,7 @@ class Field implements CastsAttributes
       case 'entries':
       case 'entriessortable':
       case 'customers':
+      case 'checkbox-group':
         $value = is_array($value) ? implode(',', $value) : $value;
         break;
       case 'editor-small':
