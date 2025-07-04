@@ -141,17 +141,25 @@ class Field implements CastsAttributes
       case 'file':
         // Some files and images are returned from Capi with a file_id attribute
         // rather than file.
-        return StructureFile::cast(array_merge(
-          ['file' => $value['file_id'] ?? null],
-          $value,
-        ));
+        return StructureFile::cast(
+          $value !== null
+            ? array_merge(
+            ['file' => $value['file_id'] ?? null],
+            $value,
+          )
+            : null
+        );
       case 'image':
         // Some files and images are returned from Capi with a file_id attribute
         // rather than file.
-        return Image::cast(array_merge(
-          ['file' => $value['file_id'] ?? null],
-          $value,
-        ));
+        return Image::cast(
+          $value !== null
+            ? array_merge(
+            ['file' => $value['file_id'] ?? null],
+            $value,
+          )
+            : null
+        );
       case 'editor-small':
       case 'editor-large':
         return $value ? new HtmlString($value) : null;
