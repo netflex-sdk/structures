@@ -15,9 +15,10 @@ class StructureServiceProvider extends ServiceProvider
 {
     public function boot ()
     {
+        $models = [];
         $classFinder = fn () => ClassFinder::getClassesInNamespace('App\Models', ClassFinder::RECURSIVE_MODE);
 
-        if (App::environment('production')) {
+        if(in_array(App::environment(), ['master', 'dev'])) {
           $models = Cache::rememberForever('netflex/structure/models', $classFinder);
         } else {
           $models = $classFinder();
