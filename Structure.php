@@ -3,16 +3,12 @@
 namespace Netflex\Structure;
 
 use Exception;
-
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
-
 use Netflex\API\Contracts\APIClient;
 use Netflex\API\Facades\API;
-use Netflex\Structure\Model;
-
 use Netflex\Support\Accessors;
 
 /**
