@@ -2,13 +2,16 @@
 
 namespace Netflex\Structure;
 
-use Closure;
+use Netflex\Structure\Structure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Entry extends Model
 {
-    protected function getMapper(): Closure
+    /**
+     * @return Closure
+     */
+    protected function getMapper()
     {
         return function ($attributes) {
             if (isset($attributes['directory_id'])) {

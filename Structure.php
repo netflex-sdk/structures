@@ -3,12 +3,16 @@
 namespace Netflex\Structure;
 
 use Exception;
+
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+
 use Netflex\API\Contracts\APIClient;
 use Netflex\API\Facades\API;
+use Netflex\Structure\Model;
+
 use Netflex\Support\Accessors;
 
 /**
@@ -43,7 +47,7 @@ class Structure
   protected $attributes = [];
 
   /**
-   * @param array $attributes
+   * @param array $attributes 
    */
   protected function __construct(array $attributes = [])
   {
@@ -57,7 +61,7 @@ class Structure
   public static function isModelRegistered(string $model)
   {
     $instance = new $model([], false);
-
+    
     if ($instance instanceof Model) {
       return App::bound('structure.' . $instance->getRelationId());
     }
@@ -67,7 +71,7 @@ class Structure
 
   /**
    * Register a model
-   * @param string $model
+   * @param string $model 
    * @return bool
    */
   public static function registerModel(string $model, bool $overwrite = true)
@@ -90,7 +94,7 @@ class Structure
   }
 
   /**
-   * @param mixed $id
+   * @param mixed $id 
    * @return Model
    * @throws Exception
    */
@@ -113,9 +117,9 @@ class Structure
   }
 
   /**
-   * @param int $id
+   * @param int $id 
    * @param APIClient|null $client
-   * @return static|null
+   * @return static|null 
    */
   public static function retrieve($id, $client = null)
   {

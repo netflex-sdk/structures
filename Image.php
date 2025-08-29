@@ -2,6 +2,8 @@
 
 namespace Netflex\Structure;
 
+use Netflex\Structure\File;
+
 /**
  * @property int $file
  * @property string|null $name
@@ -10,16 +12,16 @@ namespace Netflex\Structure;
  */
 class Image extends File
 {
-    public function getFileAttribute($file): int|null
+    public function getFileAttribute($file)
     {
         return $file ? (int) $file : null;
     }
 
     /**
-     * @param string|null $preset
-     * @return string|null
+     * @param string|null $preset 
+     * @return string|null 
      */
-    public function url($preset = 'default'): string|null
+    public function url($preset = 'default')
     {
         if ($path = $this->getPathAttribute()) {
             if ($preset) {
@@ -28,7 +30,5 @@ class Image extends File
 
             return cdn_url($path);
         }
-
-        return null;
     }
 }

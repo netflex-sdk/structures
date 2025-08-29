@@ -10,11 +10,14 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use Netflex\Files\File;
 use Netflex\Notifications\Automation\AutomationEmail;
-use Netflex\RuleBuilder\DateRules\DateRule;
 use Netflex\Structure\File as StructureFile;
 use Netflex\Structure\Contracts\StructureField;
 use Netflex\Support\HtmlString;
 use Netflex\Support\Accessors;
+use Netflex\Structure\Model;
+
+use Netflex\RuleBuilder\DateRules\DateRule;
+use Netflex\RuleBuilder\Exceptions\RuleBuilderException;
 
 /**
  * @property-read int $id
@@ -44,17 +47,17 @@ class Field implements CastsAttributes
     }
   }
 
-  public function getIdAttribute($id): int
+  public function getIdAttribute($id)
   {
     return (int) $id;
   }
 
-  public function getCollectionIdAttribute($collectionId): int
+  public function getCollectionIdAttribute($collectionId)
   {
     return (int) $collectionId;
   }
 
-  public function getSortingAttribute($sorting): int
+  public function getSortingAttribute($sorting)
   {
     return (int) $sorting;
   }
@@ -64,7 +67,7 @@ class Field implements CastsAttributes
    * @param Collection $keys
    * @return static
    */
-  protected function findField(Collection $fields, Collection $keys): static
+  protected function findField(Collection $fields, Collection $keys)
   {
     $key = $keys->shift();
 
@@ -92,15 +95,12 @@ class Field implements CastsAttributes
    * @param string|array $key
    * @return static
    */
-  protected function getField(Model $model, $key): static
+  protected function getField(Model $model, $key)
   {
-    return $this->findField(
-      $model->getStructureAttribute()->fields,
-      Collection::make($key),
-    );
+    return $this->findField($model->getStructureAttribute()->fields, Collection::make($key));
   }
 
-  protected function getBlockField(array $block, Field $field): static
+  protected function getBlockField(array $block, Field $field)
   {
     $blockFieldAttributes = Collection::make($field->blocks)
       ->first(function ($blockFieldAttributes) use ($block) {
@@ -117,7 +117,7 @@ class Field implements CastsAttributes
    * @param array $attributes
    * @return array|bool|Carbon|float|int|mixed|EditorBlocks|JSON|null
    */
-  public function get($model, $keys, $value, $attributes): mixed
+  public function get($model, $keys, $value, $attributes)
   {
     switch ($this->type) {
       case 'checkbox':
@@ -125,40 +125,19 @@ class Field implements CastsAttributes
       case 'customer-group':
       case 'entry':
       case 'customer':
-        return !is_null($value) ? intval($value) : null;
+        return $value ? intval($value) : null;
       case 'integer':
         return intval($value);
       case 'float':
         return floatval($value);
-      case 'checkbox-group':
       case 'tags':
-        return !is_null($value)
-          ? array_values(array_filter(explode(',', strval($value))))
-          : [];
+        return array_values(array_filter(explode(',', $value)));
       case 'automation-email':
         return AutomationEmail::find($value);
       case 'file':
-        // Some files and images are returned from Capi with a file_id attribute
-        // rather than file.
-        return StructureFile::cast(
-          $value !== null
-            ? array_merge(
-            ['file' => $value['file_id'] ?? null],
-            $value,
-          )
-            : null
-        );
+        return StructureFile::cast($value);
       case 'image':
-        // Some files and images are returned from Capi with a file_id attribute
-        // rather than file.
-        return Image::cast(
-          $value !== null
-            ? array_merge(
-            ['file' => $value['file_id'] ?? null],
-            $value,
-          )
-            : null
-        );
+        return Image::cast($value);
       case 'editor-small':
       case 'editor-large':
         return $value ? new HtmlString($value) : null;
@@ -182,15 +161,21 @@ class Field implements CastsAttributes
       case 'entries':
       case 'entriessortable':
       case 'customers':
-        return !is_null($value)
-          ? array_map(
-            fn ($value) => ($value ? intval($value) : null),
-            array_values(array_filter(explode(',', strval($value)))),
-          )
-          : [];
+        return array_map(function ($value) {
+          return $value ? intval($value) : null;
+        }, array_values(array_filter(explode(',', $value))));
       case 'json':
-      case 'rule-builder':
         return new JSON(json_decode($value, true));
+      case 'rule-builder':
+        if ($value) {
+          try {
+            return DateRule::fromJson($value);
+          } catch (RuleBuilderException $e) {
+            return null;
+          }
+        }
+
+        return null;
       case 'editor-blocks':
         return new EditorBlocks($value);
       case 'date':
@@ -204,23 +189,14 @@ class Field implements CastsAttributes
           ->map(function ($block) use ($model, $keys, $value, $field) {
             $blockField = $this->getBlockField($block, $field);
 
-            return $blockField->get(
-              $model,
-              [$keys, $block['type']],
-              $block,
-              $blockField->attributes,
-            );
+            return $blockField->get($model, [$keys, $block['type']], $block, $blockField->attributes);
           })
           ->toArray();
       case 'matrix_block':
         $field = $this->getField($model, $keys);
 
         return Collection::make($field->fields)
-          ->mapWithKeys(function ($fieldAttributes) use (
-            $model,
-            $value,
-            $keys,
-          ) {
+          ->mapWithKeys(function ($fieldAttributes) use ($model, $value, $keys) {
             $field = new static($fieldAttributes);
 
             $fieldName = $fieldAttributes['alias'];
@@ -228,12 +204,7 @@ class Field implements CastsAttributes
             $fieldValue = $value[$fieldName] ?? null;
 
             return [
-              $fieldName => $field->get(
-                $model,
-                array_merge($keys, [$fieldName]),
-                $fieldValue,
-                $fieldAttributes,
-              ),
+              $fieldName => $field->get($model, array_merge($keys, [$fieldName]), $fieldValue, $fieldAttributes),
             ];
           })
           ->merge([
@@ -256,9 +227,9 @@ class Field implements CastsAttributes
    * @param Model $model
    * @param string[] $keys
    * @param mixed $value
-   * @param mixed|array $attributes
+   * @param mixed[] $attributes
    */
-  public function set($model, $keys, $value, $attributes): array
+  public function set($model, $keys, $value, $attributes)
   {
     $key = Collection::make($keys)->pop();
 
@@ -268,7 +239,7 @@ class Field implements CastsAttributes
         break;
       case 'file':
       case 'image':
-        if ($value instanceof File || $attributes instanceof StructureFile) {
+        if ($value instanceof File || $attributes instanceof StructureFile || $attributes instanceof Image) {
           $value = $value->id;
         }
         break;
@@ -289,7 +260,6 @@ class Field implements CastsAttributes
       case 'entries':
       case 'entriessortable':
       case 'customers':
-      case 'checkbox-group':
         $value = is_array($value) ? implode(',', $value) : $value;
         break;
       case 'editor-small':
@@ -303,9 +273,7 @@ class Field implements CastsAttributes
         $value = $value instanceof DateRule ? $value->jsonSerialize() : $value;
         break;
       case 'editor-blocks':
-        $value = $value instanceof EditorBlocks
-          ? $value->jsonSerialize()
-          : $value;
+        $value = $value instanceof EditorBlocks ? $value->jsonSerialize() : $value;
         break;
       case 'date':
         $value = $value instanceof Carbon ? $value->toDateString() : $value;
@@ -322,12 +290,7 @@ class Field implements CastsAttributes
 
             $blockKey = $block['type'];
 
-            return $blockField->set(
-              $model,
-              [$keys, $blockKey],
-              $block,
-              $blockField->attributes,
-            )[$blockKey];
+            return $blockField->set($model, [$keys, $blockKey], $block, $blockField->attributes)[$blockKey];
           })
           ->toArray();
 
@@ -336,11 +299,7 @@ class Field implements CastsAttributes
         $field = $this->getField($model, $keys);
 
         $value = Collection::make($field->fields)
-          ->mapWithKeys(function ($fieldAttributes) use (
-            $model,
-            $value,
-            $keys,
-          ) {
+          ->mapWithKeys(function ($fieldAttributes) use ($model, $value, $keys) {
             $field = new static($fieldAttributes);
 
             $fieldName = $fieldAttributes['alias'];
@@ -348,12 +307,7 @@ class Field implements CastsAttributes
             $fieldValue = $value[$fieldName] ?? null;
 
             $foo = [
-              $fieldName => $field->set(
-                $model,
-                array_merge($keys, [$fieldName]),
-                $fieldValue,
-                $fieldAttributes,
-              )[$fieldName],
+              $fieldName => $field->set($model, array_merge($keys, [$fieldName]), $fieldValue, $fieldAttributes)[$fieldName],
             ];
 
             return $foo;
