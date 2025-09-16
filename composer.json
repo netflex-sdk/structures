@@ -15,7 +15,7 @@
         "netflex/structure": "*"
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "apility/rule-builder": "^1.5.2",
         "haydenpierce/class-finder": "^0.4.3",
         "netflex/pages": "^6.0",
