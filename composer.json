@@ -11,9 +11,6 @@
             "Netflex\\Structure\\": ""
         }
     },
-    "replace": {
-        "netflex/structure": "*"
-    },
     "require": {
         "php": "^8.4",
         "apility/rule-builder": "^1.5.2",
