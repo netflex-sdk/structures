@@ -5,7 +5,7 @@ namespace Netflex\Structure;
 use Exception;
 use Throwable;
 
-use Apility\SEOTools\Facades\SEOTools;
+use Apriil\SEOTools\Facades\SEOTools;
 
 use Netflex\Query\QueryableModel;
 use Netflex\Query\Exceptions\NotFoundException;
